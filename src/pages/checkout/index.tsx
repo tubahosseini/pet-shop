@@ -2,10 +2,10 @@ import React from "react";
 import PrimaryLayout from "@/layout/PrimaryLayout";
 import { ReactElement } from "react";
 
-export default function HomePage() {
-  return <div>HomePage</div>;
+export default function CheckoutPage() {
+  return <div>CheckoutPage</div>;
 }
 
-HomePage.getLayout = function getLayout(page: ReactElement) {
+CheckoutPage.getLayout = function getLayout(page: ReactElement) {
   return <PrimaryLayout>{page}</PrimaryLayout>;
 };
