@@ -6,9 +6,9 @@ let theme = createTheme({
   },
   palette: {
     primary: {
-      main: "#FFFFFF", //white
-      dark: "#A389FF", //purple
-      light: "#F1AE4B", //orange
+      main: "#A389FF", //purple
+      dark: "#F1AE4B", //orange
+      light: "#000", //white
     },
   },
 });
