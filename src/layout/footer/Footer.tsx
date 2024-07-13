@@ -16,7 +16,7 @@ export default function Footer() {
         },
         justifyContent: "space-around",
         width: "100%",
-        bgcolor: "primary.light",
+        bgcolor: "primary.dark",
         py: 2,
       }}
     >

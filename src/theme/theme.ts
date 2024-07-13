@@ -8,7 +8,7 @@ let theme = createTheme({
     primary: {
       main: "#A389FF", //purple
       dark: "#F1AE4B", //orange
-      light: "#000", //white
+      light: "#fff", //white
     },
   },
 });
