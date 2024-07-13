@@ -16,7 +16,8 @@ export default function Footer() {
         },
         justifyContent: "space-around",
         width: "100%",
-        backgroundColor: "orange",
+        bgcolor: "primary.dark",
+        py: 2,
       }}
     >
       <Box
