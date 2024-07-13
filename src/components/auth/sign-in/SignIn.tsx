@@ -1,29 +1,76 @@
 import React from "react";
-import { FaPaw } from "react-icons/fa";
-import AuthButton from "../AuthButton";
+import { Pets } from "@mui/icons-material";
 import ChangeAuth from "../ChangeAuth";
 import TextFieldAuth from "../TextFieldAuth";
+import { Box, Typography } from "@mui/material";
+import ButtonAuth from "../ButtonAuth";
 
 const SignIn: React.FC = () => {
   return (
-    <div className="flex flex-col sm:flex-row h-screen overflow-hidden">
-      <div className="flex flex-col sm:w-1/2 p-4 sm:p-10 mt-12 items-center sm:justify-center">
-        <div className="flex flex-col items-center">
-          <FaPaw size={30} className="text-orange-400" />
-          <h1 className="text-xl font-bold text-purple-600">Hi!</h1>
-          <p className="text-xs text-purple-600">
+    <Box
+      sx={{
+        display: "flex",
+        flexDirectionn: {
+          xs: "column", // mobile devices
+          sm: "row", // tablets and up
+        },
+        height: "100vh",
+        overflow: "hidden",
+        justifyContent: "center",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+          p: 4,
+          justifyContent: {
+            sm: "center", // tablets and up
+          },
+          mt: {
+            xs: 3,
+            sm: 0,
+          },
+          width: {
+            sm: "50%",
+          },
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Pets sx={{ color: "primary.dark", fontSize: 40 }} />
+          <Typography
+            sx={{ color: "primary.main", fontSize: 30, fontWeight: "bold" }}
+          >
+            Hi !
+          </Typography>
+          <Typography sx={{ color: "primary.main" }}>
             Please enter the information you entered while registering.
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 w-full mt-4">
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+            mt: 2,
+            width: "100%",
+          }}
+        >
           <TextFieldAuth type="text" label="username" />
           <TextFieldAuth type="password" label="password" />
-
-          <AuthButton text="Sign Up" />
-        </div>
-      </div>
+          <ButtonAuth text="Sign Up" />
+        </Box>
+      </Box>
       <ChangeAuth pText="Don't have an account?" buttonText="Sign Up" />
-    </div>
+    </Box>
   );
 };
 

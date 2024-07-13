@@ -7,7 +7,25 @@ interface TextFieldAuthProps {
 }
 
 const TextFieldAuth: React.FC<TextFieldAuthProps> = ({ label, type }) => {
-  return <TextField label={label} type={type} />;
+  return (
+    <TextField
+      sx={{
+        "& fieldset": {
+          borderColor: "primary.main",
+        },
+        "& .MuiOutlinedInput-root": {
+          "&:hover fieldset": {
+            borderColor: "primary.main",
+          },
+          "&.Mui-focused fieldset": {
+            borderColor: "primary.main",
+          },
+        },
+      }}
+      label={label}
+      type={type}
+    />
+  );
 };
 
 export default TextFieldAuth;
