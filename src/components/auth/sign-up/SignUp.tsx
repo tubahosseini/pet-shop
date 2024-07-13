@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Pets } from "@mui/icons-material";
 import ChangeAuth from "../ChangeAuth";
-import { Box, TextField, Typography } from "@mui/material";
-import ButtonAuth from "../ButtonAuth";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import {
   outerBoxStyles,
@@ -13,36 +14,39 @@ import {
   formContainerStyles,
   inputBoxStyles,
   textFieldStyles,
+  buttonSubmitStyles,
 } from "./SignUpStyles";
 import { useSignUpNewUser } from "../hooks";
+import validationSchema from "./validationSchema";
 
-const SignUp = () => {
+interface SignUpFormInputs {
+  firstname: string;
+  lastname: string;
+  username: string;
+  password: string;
+  phoneNumber: string;
+  address: string;
+}
+
+const SignUp: React.FC = () => {
   const { mutate } = useSignUpNewUser();
-  const [userData, setUserData] = useState({
-    firstname: "",
-    lastname: "",
-    username: "",
-    password: "",
-    phoneNumber: "",
-    address: "",
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignUpFormInputs>({
+    resolver: yupResolver(validationSchema),
   });
 
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setUserData({
-      ...userData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = () => {
+  const onSubmit: SubmitHandler<SignUpFormInputs> = (data) => {
     mutate(
       {
-        newUserData: userData,
+        newUserData: data,
       },
       {
         onSuccess: () => {
-          toast.success(`You are successfully signed up ${userData.username}`);
+          toast.success(`You are successfully signed up ${data.username}`);
         },
         onError: (error) => {
           toast.error("Sign up failed");
@@ -62,61 +66,104 @@ const SignUp = () => {
             Please enter the information below.
           </Typography>
         </Box>
-        <Box sx={formContainerStyles}>
-          <Box sx={inputBoxStyles}>
-            <TextField
-              sx={textFieldStyles}
-              type="text"
-              label="First name"
-              name="firstname"
-              value={userData.firstname}
-              onChange={handleChange}
-            />
-            <TextField
-              sx={textFieldStyles}
-              type="text"
-              label="Last name"
-              name="lastname"
-              value={userData.lastname}
-              onChange={handleChange}
-            />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Box sx={formContainerStyles}>
+            <Box sx={inputBoxStyles}>
+              <Controller
+                name="firstname"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    sx={textFieldStyles}
+                    type="text"
+                    label="First name"
+                    error={!!errors.firstname}
+                    helperText={errors.firstname?.message}
+                  />
+                )}
+              />
+              <Controller
+                name="lastname"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    sx={textFieldStyles}
+                    type="text"
+                    label="Last name"
+                    error={!!errors.lastname}
+                    helperText={errors.lastname?.message}
+                  />
+                )}
+              />
+            </Box>
+            <Box sx={inputBoxStyles}>
+              <Controller
+                name="username"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    sx={textFieldStyles}
+                    type="text"
+                    label="Username"
+                    error={!!errors.username}
+                    helperText={errors.username?.message}
+                  />
+                )}
+              />
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    sx={textFieldStyles}
+                    type="password"
+                    label="Password"
+                    error={!!errors.password}
+                    helperText={errors.password?.message}
+                  />
+                )}
+              />
+            </Box>
+            <Box sx={inputBoxStyles}>
+              <Controller
+                name="phoneNumber"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    sx={textFieldStyles}
+                    type="text"
+                    label="Phone number"
+                    error={!!errors.phoneNumber}
+                    helperText={errors.phoneNumber?.message}
+                  />
+                )}
+              />
+              <Controller
+                name="address"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    sx={textFieldStyles}
+                    type="text"
+                    label="Address"
+                    error={!!errors.address}
+                    helperText={errors.address?.message}
+                  />
+                )}
+              />
+            </Box>
+
+            <Button type="submit" sx={buttonSubmitStyles}>
+              Sign Up
+            </Button>
           </Box>
-          <Box sx={inputBoxStyles}>
-            <TextField
-              sx={textFieldStyles}
-              type="text"
-              label="Username"
-              name="username"
-              value={userData.username}
-              onChange={handleChange}
-            />
-            <TextField
-              sx={textFieldStyles}
-              type="password"
-              label="Password"
-              name="password"
-              value={userData.password}
-              onChange={handleChange}
-            />
-          </Box>
-          <TextField
-            sx={textFieldStyles}
-            type="number"
-            label="Phone number"
-            name="phoneNumber"
-            value={userData.phoneNumber}
-            onChange={handleChange}
-          />
-          <TextField
-            sx={textFieldStyles}
-            type="text"
-            label="Address"
-            name="address"
-            value={userData.address}
-            onChange={handleChange}
-          />
-          <ButtonAuth text="Sign Up" onClick={handleSubmit} />
-        </Box>
+        </form>
       </Box>
       <ChangeAuth pText="Already have an account?" buttonText="Sign In" />
     </Box>

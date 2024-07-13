@@ -6,7 +6,6 @@ export const outerBoxStyles = {
   },
   height: "100vh",
   overflow: "hidden",
-  // justifyContent: "center",
 };
 
 export const innerBoxStyles = {
@@ -41,16 +40,17 @@ export const typographyInfoStyles = {
 
 export const formContainerStyles = {
   display: "flex",
-  gap: 1,
+  gap: 2,
   width: "100%",
   flexDirection: "column",
-  mt: 1,
+  mt: 2,
 };
 
 export const inputBoxStyles = {
   display: "flex",
   gap: 1,
   width: "100%",
+  justifyContent: "center",
 };
 export const textFieldStyles = {
   "& fieldset": {
@@ -64,4 +64,19 @@ export const textFieldStyles = {
       borderColor: "primary.main",
     },
   },
+};
+
+export const buttonSubmitStyles = {
+  "&:hover": {
+    backgroundColor: "primary.dark",
+  },
+  "&:active": {
+    backgroundColor: "primary.dark",
+  },
+  bgcolor: "primary.dark",
+  py: 1 / 2,
+  px: 4,
+  my: 1 / 2,
+  color: "primary.light",
+  borderRadius: 3,
 };
