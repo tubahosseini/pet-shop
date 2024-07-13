@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import "react-toastify/dist/ReactToastify.css";
 import { theme } from "@/theme/theme";
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
@@ -6,6 +7,7 @@ import { NextPage } from "next";
 import { ReactElement, ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { AppProps } from "next/app";
+import { ToastContainer } from "react-toastify";
 
 export type NextPageWithLayout<P = {}> = NextPage<P> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -30,7 +32,12 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <QueryClientProvider client={queryClient}>
-        {getLayout(<Component {...pageProps} />)}
+        {getLayout(
+          <>
+            <ToastContainer />
+            <Component {...pageProps} />
+          </>
+        )}
       </QueryClientProvider>
     </ThemeProvider>
   );
