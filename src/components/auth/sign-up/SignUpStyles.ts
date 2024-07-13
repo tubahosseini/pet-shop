@@ -52,3 +52,16 @@ export const inputBoxStyles = {
   gap: 1,
   width: "100%",
 };
+export const textFieldStyles = {
+  "& fieldset": {
+    borderColor: "primary.main",
+  },
+  "& .MuiOutlinedInput-root": {
+    "&:hover fieldset": {
+      borderColor: "primary.main",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "primary.main",
+    },
+  },
+};

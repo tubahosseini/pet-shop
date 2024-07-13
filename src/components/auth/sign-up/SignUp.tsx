@@ -12,6 +12,7 @@ import {
   typographyInfoStyles,
   formContainerStyles,
   inputBoxStyles,
+  textFieldStyles,
 } from "./SignUpStyles";
 import { useSignUpNewUser } from "../hooks";
 
@@ -64,6 +65,7 @@ const SignUp = () => {
         <Box sx={formContainerStyles}>
           <Box sx={inputBoxStyles}>
             <TextField
+              sx={textFieldStyles}
               type="text"
               label="First name"
               name="firstname"
@@ -71,6 +73,7 @@ const SignUp = () => {
               onChange={handleChange}
             />
             <TextField
+              sx={textFieldStyles}
               type="text"
               label="Last name"
               name="lastname"
@@ -80,6 +83,7 @@ const SignUp = () => {
           </Box>
           <Box sx={inputBoxStyles}>
             <TextField
+              sx={textFieldStyles}
               type="text"
               label="Username"
               name="username"
@@ -87,6 +91,7 @@ const SignUp = () => {
               onChange={handleChange}
             />
             <TextField
+              sx={textFieldStyles}
               type="password"
               label="Password"
               name="password"
@@ -95,6 +100,7 @@ const SignUp = () => {
             />
           </Box>
           <TextField
+            sx={textFieldStyles}
             type="number"
             label="Phone number"
             name="phoneNumber"
@@ -102,6 +108,7 @@ const SignUp = () => {
             onChange={handleChange}
           />
           <TextField
+            sx={textFieldStyles}
             type="text"
             label="Address"
             name="address"

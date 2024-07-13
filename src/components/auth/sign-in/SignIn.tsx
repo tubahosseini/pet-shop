@@ -1,8 +1,7 @@
 import React from "react";
 import { Pets } from "@mui/icons-material";
 import ChangeAuth from "../ChangeAuth";
-import TextFieldAuth from "../TextFieldAuth";
-import { Box, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import ButtonAuth from "../ButtonAuth";
 import {
   outerBoxStyles,
@@ -11,6 +10,7 @@ import {
   typographyHiStyles,
   typographyInfoStyles,
   formContainerStyles,
+  textFieldStyles,
 } from "./SignInStyles";
 
 const SignIn: React.FC = () => {
@@ -25,8 +25,8 @@ const SignIn: React.FC = () => {
           </Typography>
         </Box>
         <Box sx={formContainerStyles}>
-          <TextFieldAuth type="text" label="username" />
-          <TextFieldAuth type="password" label="password" />
+          <TextField sx={textFieldStyles} type="text" label="username" />
+          <TextField sx={textFieldStyles} type="password" label="password" />
           <ButtonAuth text="Sign Up" />
         </Box>
       </Box>
