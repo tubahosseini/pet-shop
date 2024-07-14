@@ -6,17 +6,17 @@ import { toast } from "react-toastify";
 import { useSignInUser } from "../hooks";
 import { routes } from "@/constants/routes";
 import { useForm, Controller } from "react-hook-form";
+import { useRouter } from "next/router";
 import {
-  outerBoxStyles,
-  innerBoxStyles,
+  buttonSubmitStyles,
+  formContainerStyles,
   iconBoxStyles,
+  innerBoxStyles,
+  outerBoxStyles,
+  textFieldStyles,
   typographyHiStyles,
   typographyInfoStyles,
-  formContainerStyles,
-  textFieldStyles,
-  buttonSubmitStyles,
-} from "./SignInStyles";
-import { useRouter } from "next/router";
+} from "../styles/auth.styles";
 
 const SignIn: React.FC = () => {
   const router = useRouter();

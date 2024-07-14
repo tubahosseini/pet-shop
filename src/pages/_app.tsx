@@ -20,7 +20,7 @@ type AppPropsWithLayout = AppProps & {
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: false, //If a user leaves your application and returns and the query data is old, TanStack Query automatically requests fresh data for you in the background. i disabled it using refetchOnWindowFocus!
     },
   },
 });

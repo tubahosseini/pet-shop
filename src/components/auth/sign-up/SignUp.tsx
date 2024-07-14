@@ -15,7 +15,7 @@ import {
   inputBoxStyles,
   textFieldStyles,
   buttonSubmitStyles,
-} from "./SignUpStyles";
+} from "../styles/auth.styles";
 import { useSignUpNewUser } from "../hooks";
 import validationSchema from "./validationSchema";
 
