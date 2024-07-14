@@ -80,6 +80,7 @@ const SignUp: React.FC = () => {
                     label="First name"
                     error={!!errors.firstname}
                     helperText={errors.firstname?.message}
+                    required
                   />
                 )}
               />
@@ -94,6 +95,7 @@ const SignUp: React.FC = () => {
                     label="Last name"
                     error={!!errors.lastname}
                     helperText={errors.lastname?.message}
+                    required
                   />
                 )}
               />
@@ -110,6 +112,7 @@ const SignUp: React.FC = () => {
                     label="Username"
                     error={!!errors.username}
                     helperText={errors.username?.message}
+                    required
                   />
                 )}
               />
@@ -124,6 +127,7 @@ const SignUp: React.FC = () => {
                     label="Password"
                     error={!!errors.password}
                     helperText={errors.password?.message}
+                    required
                   />
                 )}
               />
@@ -140,6 +144,17 @@ const SignUp: React.FC = () => {
                     label="Phone number"
                     error={!!errors.phoneNumber}
                     helperText={errors.phoneNumber?.message}
+                    required
+                    inputProps={{ maxLength: 11 }} // prevent the user from entering more than 11 digits
+                    onChange={(e) => {
+                      // to ensure that only numeric digits are entered by the user
+                      const value = e.target.value;
+                      const regex = /^[0-9]+$/;
+                      if (value === "" || regex.test(value)) {
+                        // value === "" allows the input field to be cleared by the user
+                        field.onChange(e);
+                      }
+                    }}
                   />
                 )}
               />
@@ -154,6 +169,7 @@ const SignUp: React.FC = () => {
                     label="Address"
                     error={!!errors.address}
                     helperText={errors.address?.message}
+                    required
                   />
                 )}
               />

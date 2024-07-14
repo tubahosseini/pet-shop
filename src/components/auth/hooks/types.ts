@@ -3,7 +3,7 @@ export interface IUser {
   lastname: string;
   username: string;
   password: string;
-  phoneNumber: number | string; //! fix the type
+  phoneNumber: string | number; //! why do i have to set number here for regex validation in sig in form?
   address: string;
 }
 export interface IUserSignInForm {
