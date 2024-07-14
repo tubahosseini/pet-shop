@@ -6,3 +6,7 @@ export interface IUser {
   phoneNumber: number | string; //! fix the type
   address: string;
 }
+export interface IUserSignInForm {
+  username: string;
+  password: string;
+}

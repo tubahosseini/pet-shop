@@ -1,10 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
-import { signUpNewUser } from "../services";
-import { IUser } from "./types";
+import { signInUser, signUpNewUser } from "../services";
+import { IUser, IUserSignInForm } from "./types";
 
 export const useSignUpNewUser = () => {
   return useMutation({
     mutationFn: (data: { newUserData: IUser }) =>
       signUpNewUser(data.newUserData),
+  });
+};
+
+export const useSignInUser = () => {
+  return useMutation({
+    mutationFn: (data: IUserSignInForm) => signInUser(data),
   });
 };
