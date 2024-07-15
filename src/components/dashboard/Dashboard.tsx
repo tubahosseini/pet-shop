@@ -39,7 +39,7 @@ export default function Dashboard() {
       case "InventoryTab":
         return <InventoryTab />;
       default:
-        return <DashboardTab />;
+        return <ProductsTab />;
     }
   };
 
@@ -90,7 +90,7 @@ export default function Dashboard() {
           <ListItemText primary="Sign Out" sx={listItemTextStyles} />
         </ListItem>
       </List>
-      <Box sx={{ width: "100%" }}> {renderComponent()}</Box>
+      {renderComponent()}
     </Box>
   );
 }
