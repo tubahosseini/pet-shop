@@ -13,7 +13,6 @@ export const innerBoxStyles = {
   flexDirection: "column",
   alignItems: "center",
   textAlign: "center",
-  p: 4,
   justifyContent: {
     xs: "start",
     sm: "center", // tablets and up
@@ -21,6 +20,8 @@ export const innerBoxStyles = {
   width: {
     sm: "50%",
   },
+  px: { xs: 4, md: 14 },
+  mt: { xs: 2, sm: 14 },
 };
 
 export const iconBoxStyles = {
@@ -37,21 +38,7 @@ export const typographyHiStyles = {
 
 export const typographyInfoStyles = {
   color: "primary.main",
-};
-
-export const formContainerStyles = {
-  display: "flex",
-  gap: 2,
-  width: "100%",
-  flexDirection: "column",
-  mt: 2,
-};
-
-export const inputBoxStyles = {
-  display: "flex",
-  gap: 1,
-  width: "100%",
-  justifyContent: "center",
+  mb: 2,
 };
 
 export const textFieldStyles = {
@@ -66,6 +53,10 @@ export const textFieldStyles = {
       borderColor: "primary.main",
     },
   },
+  mb: {
+    xs: 1,
+    sm: 2,
+  },
 };
 
 export const buttonSubmitStyles = {
@@ -78,7 +69,7 @@ export const buttonSubmitStyles = {
   bgcolor: "primary.dark",
   py: 1 / 2,
   px: 4,
-  my: 1 / 2,
+  mt: 1,
   color: "primary.light",
   borderRadius: 3,
 };
@@ -145,7 +136,7 @@ export const changeAuthButtonStyles = {
   bgcolor: "primary.dark",
   py: 1 / 2,
   px: 4,
-  my: 1 / 2,
+  m: 1 / 2,
   color: "primary.light",
   borderRadius: 3,
 };

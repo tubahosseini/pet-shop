@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Pets } from "@mui/icons-material";
 import ChangeAuth from "../ChangeAuth";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  MobileStepper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { toast } from "react-toastify";
 import {
   outerBoxStyles,
@@ -11,8 +17,6 @@ import {
   iconBoxStyles,
   typographyHiStyles,
   typographyInfoStyles,
-  formContainerStyles,
-  inputBoxStyles,
   textFieldStyles,
   buttonSubmitStyles,
 } from "../styles/auth.styles";
@@ -29,6 +33,16 @@ interface SignUpFormInputs {
 }
 
 const SignUp: React.FC = () => {
+  // stepper functionality
+  const [activeStep, setActiveStep] = useState(0);
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
   const { mutate } = useSignUpNewUser();
 
   const {
@@ -67,8 +81,8 @@ const SignUp: React.FC = () => {
           </Typography>
         </Box>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Box sx={formContainerStyles}>
-            <Box sx={inputBoxStyles}>
+          {activeStep === 0 && (
+            <>
               <Controller
                 name="firstname"
                 control={control}
@@ -81,6 +95,7 @@ const SignUp: React.FC = () => {
                     error={!!errors.firstname}
                     helperText={errors.firstname?.message}
                     required
+                    fullWidth
                   />
                 )}
               />
@@ -96,11 +111,10 @@ const SignUp: React.FC = () => {
                     error={!!errors.lastname}
                     helperText={errors.lastname?.message}
                     required
+                    fullWidth
                   />
                 )}
               />
-            </Box>
-            <Box sx={inputBoxStyles}>
               <Controller
                 name="username"
                 control={control}
@@ -113,9 +127,14 @@ const SignUp: React.FC = () => {
                     error={!!errors.username}
                     helperText={errors.username?.message}
                     required
+                    fullWidth
                   />
                 )}
               />
+            </>
+          )}
+          {activeStep === 1 && (
+            <>
               <Controller
                 name="password"
                 control={control}
@@ -128,11 +147,10 @@ const SignUp: React.FC = () => {
                     error={!!errors.password}
                     helperText={errors.password?.message}
                     required
+                    fullWidth
                   />
                 )}
               />
-            </Box>
-            <Box sx={inputBoxStyles}>
               <Controller
                 name="phoneNumber"
                 control={control}
@@ -145,6 +163,7 @@ const SignUp: React.FC = () => {
                     error={!!errors.phoneNumber}
                     helperText={errors.phoneNumber?.message}
                     required
+                    fullWidth
                     inputProps={{ maxLength: 11 }} // prevent the user from entering more than 11 digits
                     onChange={(e) => {
                       // to ensure that only numeric digits are entered by the user
@@ -170,16 +189,41 @@ const SignUp: React.FC = () => {
                     error={!!errors.address}
                     helperText={errors.address?.message}
                     required
+                    fullWidth
                   />
                 )}
               />
-            </Box>
-
-            <Button type="submit" sx={buttonSubmitStyles}>
-              Sign Up
-            </Button>
-          </Box>
+              <Button type="submit" sx={buttonSubmitStyles}>
+                Sign Up
+              </Button>
+            </>
+          )}
         </form>
+        <MobileStepper
+          variant="dots"
+          steps={2}
+          position="static"
+          activeStep={activeStep}
+          sx={{ maxWidth: 400, flexGrow: 1 }}
+          nextButton={
+            <Button
+              size="small"
+              onClick={handleNext}
+              disabled={activeStep === 1}
+            >
+              Next
+            </Button>
+          }
+          backButton={
+            <Button
+              size="small"
+              onClick={handleBack}
+              disabled={activeStep === 0}
+            >
+              Back
+            </Button>
+          }
+        />
       </Box>
       <ChangeAuth pText="Already have an account?" buttonText="Sign In" />
     </Box>
