@@ -8,6 +8,7 @@ import {
 import {
   Add,
   Category,
+  Checklist,
   Home,
   Inventory,
   Logout,
@@ -20,11 +21,13 @@ import {
   listStyles,
   logoIconStyles,
 } from "./styles/dashboard.styles";
+import ListIcon from "@mui/icons-material/List";
 import DashboardTab from "./tabs/dashboard-tab/DashboardTab";
 import ProductsTab from "./tabs/products-tab/ProductsTab";
 import AddTab from "./tabs/add-tab/AddTab";
 import InventoryTab from "./tabs/inventory-tab/InventoryTab";
 import useGetAllProducts from "@/components/dashboard/hooks";
+import OrdersTab from "./tabs/orders-tab/OrdersTab";
 
 export default function Dashboard() {
   const { data } = useGetAllProducts();
@@ -41,6 +44,8 @@ export default function Dashboard() {
         return <AddTab />;
       case "InventoryTab":
         return <InventoryTab data={data} />;
+      case "OrdersTab":
+        return <OrdersTab />;
       default:
         return <AddTab />;
     }
@@ -119,6 +124,15 @@ export default function Dashboard() {
             <Inventory />
           </ListItemAvatar>
           <ListItemText primary="Inventory" sx={listItemTextStyles} />
+        </ListItem>
+        <ListItem
+          sx={getListItemStyles("OrdersTab")}
+          onClick={() => setSelectedComponent("OrdersTab")}
+        >
+          <ListItemAvatar>
+            <Checklist />
+          </ListItemAvatar>
+          <ListItemText primary="Orders" sx={listItemTextStyles} />
         </ListItem>
         <ListItem sx={listItemStyles}>
           <ListItemAvatar>
