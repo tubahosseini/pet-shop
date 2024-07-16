@@ -1,33 +1,6 @@
 export const listItemStyles = {
-  "&:hover": {
-    bgcolor: "primary.light",
-    color: "primary.main",
-    borderTopLeftRadius: 25,
-    borderBottomLeftRadius: 25,
-    "::before": {
-      content: '""',
-      position: "absolute",
-      right: 0,
-      top: "-50px",
-      width: "50px",
-      height: "50px",
-      borderRadius: "50%",
-      pointerEvents: "none",
-      boxShadow: "35px 35px 0 10px white",
-    },
-    "::after": {
-      content: '""',
-      position: "absolute",
-      right: 0,
-      bottom: "-50px",
-      width: "50px",
-      height: "50px",
-      borderRadius: "50%",
-      pointerEvents: "none",
-      boxShadow: "35px -35px 0 10px white",
-    },
-  },
   color: "primary.light",
+  cursor: "pointer",
 };
 
 export const listItemTextStyles = {
