@@ -10,38 +10,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { Delete, Edit } from "@mui/icons-material";
 import { useState } from "react";
-
-function createData(
-  image: string,
-  name: string,
-  category: string,
-  subCategory: string,
-  brand: string
-) {
-  return { image, name, category, subCategory, brand };
-}
-
-const rows = [
-  createData("dog_food.jpg", "Dog Food", "Food", "Dry Food", "Brand A"),
-  createData("cat_food.jpg", "Cat Food", "Food", "Wet Food", "Brand B"),
-  createData(
-    "dog_clothes.jpg",
-    "Dog Clothes",
-    "Clothing",
-    "Jackets",
-    "Brand C"
-  ),
-  createData(
-    "cat_clothes.jpg",
-    "Cat Clothes",
-    "Clothing",
-    "Sweaters",
-    "Brand D"
-  ),
-  createData("dog_toys.jpg", "Dog Toys", "Toys", "Chew Toys", "Brand E"),
-  createData("cat_toys.jpg", "Cat Toys", "Toys", "Interactive Toys", "Brand F"),
-  createData("pet_bed.jpg", "Pet Bed", "Bedding", "Cushions", "Brand G"),
-];
+import Image from "next/image";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -77,14 +46,16 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function ProductsTab() {
+export default function ProductsTab(data: any) {
+  // console.log(data.data.data.products);
   const [order, setOrder] = useState<Order>("asc");
-  const [orderBy, setOrderBy] = useState<keyof (typeof rows)[0]>("name");
+  const [orderBy, setOrderBy] =
+    useState<keyof (typeof data.data.products)[0]>("name");
   const [page, setPage] = useState(0);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof (typeof rows)[0]
+    property: keyof (typeof data.data.data.products)[0]
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -95,7 +66,10 @@ export default function ProductsTab() {
     setPage(newPage);
   };
 
-  const sortedRows = stableSort(rows, getComparator(order, orderBy));
+  const sortedRows = stableSort(
+    data.data.data.products,
+    getComparator(order, orderBy)
+  );
 
   return (
     <TableContainer
@@ -154,15 +128,20 @@ export default function ProductsTab() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {sortedRows?.slice(page * 5, page * 5 + 5).map((row) => (
-            <TableRow key={row.name}>
+          {sortedRows?.slice(page * 5, page * 5 + 5).map((product: any) => (
+            <TableRow key={product.id}>
               <TableCell component="th" scope="row">
-                <img src={row.image} alt={row.name} width="50" />
+                <Image
+                  width={80}
+                  height={80}
+                  alt={product.name}
+                  src={`http://${product.images}`}
+                />
               </TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.category}</TableCell>
-              <TableCell>{row.subCategory}</TableCell>
-              <TableCell>{row.brand}</TableCell>
+              <TableCell>{product.name}</TableCell>
+              <TableCell>{product.category.name}</TableCell>
+              <TableCell>{product.subcategory.name}</TableCell>
+              <TableCell>{product.brand}</TableCell>
               <TableCell>
                 <Edit
                   sx={{
@@ -184,7 +163,7 @@ export default function ProductsTab() {
       <TablePagination
         rowsPerPageOptions={[]}
         component="div"
-        count={rows.length}
+        count={data.data.data.products.length}
         rowsPerPage={5}
         page={page}
         onPageChange={handleChangePage}

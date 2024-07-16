@@ -24,8 +24,11 @@ import DashboardTab from "./tabs/dashboard-tab/DashboardTab";
 import ProductsTab from "./tabs/products-tab/ProductsTab";
 import AddTab from "./tabs/add-tab/AddTab";
 import InventoryTab from "./tabs/inventory-tab/InventoryTab";
+import useGetAllProducts from "@/components/dashboard/hooks";
 
 export default function Dashboard() {
+  const { data } = useGetAllProducts();
+
   const [selectedComponent, setSelectedComponent] = useState("DashboardTab");
 
   const renderComponent = () => {
@@ -33,7 +36,7 @@ export default function Dashboard() {
       case "DashboardTab":
         return <DashboardTab />;
       case "ProductsTab":
-        return <ProductsTab />;
+        return <ProductsTab data={data} />;
       case "AddTab":
         return <AddTab />;
       case "InventoryTab":
@@ -43,7 +46,7 @@ export default function Dashboard() {
     }
   };
 
-  const getListItemStyles = (component:any) => {
+  const getListItemStyles = (component: any) => {
     return {
       ...listItemStyles,
       ...(selectedComponent === component && {
