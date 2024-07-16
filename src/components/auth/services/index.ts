@@ -1,18 +1,13 @@
-import { BASE_URL } from "@/constants/urls";
-import axios from "axios";
 import { IUser, IUserSignInForm } from "../hooks/types";
+import { api } from "@/services/api.config";
 
 export const signUpNewUser = async (newUserData: IUser) => {
   try {
-    const userResponse = await axios.post(
-      `${BASE_URL}/auth/signup`,
-      newUserData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const userResponse = await api.post(`/auth/signup`, newUserData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return {
       user: userResponse.data,
     };
@@ -23,7 +18,7 @@ export const signUpNewUser = async (newUserData: IUser) => {
 
 export const signInUser = async (data: IUserSignInForm) => {
   try {
-    const response = await axios.post(`${BASE_URL}/auth/login`, data);
+    const response = await api.post(`/auth/login`, data);
     return response.data;
   } catch (error: any) {
     if (error.response) {
