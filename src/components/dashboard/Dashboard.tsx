@@ -40,7 +40,7 @@ export default function Dashboard() {
       case "AddTab":
         return <AddTab />;
       case "InventoryTab":
-        return <InventoryTab />;
+        return <InventoryTab data={data} />;
       default:
         return <AddTab />;
     }
