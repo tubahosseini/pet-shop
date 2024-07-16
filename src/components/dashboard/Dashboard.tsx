@@ -26,7 +26,7 @@ import AddTab from "./tabs/add-tab/AddTab";
 import InventoryTab from "./tabs/inventory-tab/InventoryTab";
 
 export default function Dashboard() {
-  const [selectedComponent, setSelectedComponent] = useState("Dashboard");
+  const [selectedComponent, setSelectedComponent] = useState("DashboardTab");
 
   const renderComponent = () => {
     switch (selectedComponent) {
@@ -39,8 +39,42 @@ export default function Dashboard() {
       case "InventoryTab":
         return <InventoryTab />;
       default:
-        return <ProductsTab />;
+        return <AddTab />;
     }
+  };
+
+  const getListItemStyles = (component:any) => {
+    return {
+      ...listItemStyles,
+      ...(selectedComponent === component && {
+        bgcolor: "primary.light",
+        color: "primary.main",
+        borderTopLeftRadius: 25,
+        borderBottomLeftRadius: 25,
+        "::before": {
+          content: '""',
+          position: "absolute",
+          right: 0,
+          top: "-50px",
+          width: "50px",
+          height: "50px",
+          borderRadius: "50%",
+          pointerEvents: "none",
+          boxShadow: "35px 35px 0 10px white",
+        },
+        "::after": {
+          content: '""',
+          position: "absolute",
+          right: 0,
+          bottom: "-50px",
+          width: "50px",
+          height: "50px",
+          borderRadius: "50%",
+          pointerEvents: "none",
+          boxShadow: "35px -35px 0 10px white",
+        },
+      }),
+    };
   };
 
   return (
@@ -48,7 +82,7 @@ export default function Dashboard() {
       <List sx={listStyles}>
         <Pets sx={logoIconStyles} />
         <ListItem
-          sx={listItemStyles}
+          sx={getListItemStyles("DashboardTab")}
           onClick={() => setSelectedComponent("DashboardTab")}
         >
           <ListItemAvatar>
@@ -57,7 +91,7 @@ export default function Dashboard() {
           <ListItemText primary="Dashboard" sx={listItemTextStyles} />
         </ListItem>
         <ListItem
-          sx={listItemStyles}
+          sx={getListItemStyles("ProductsTab")}
           onClick={() => setSelectedComponent("ProductsTab")}
         >
           <ListItemAvatar>
@@ -66,7 +100,7 @@ export default function Dashboard() {
           <ListItemText primary="Products" sx={listItemTextStyles} />
         </ListItem>
         <ListItem
-          sx={listItemStyles}
+          sx={getListItemStyles("AddTab")}
           onClick={() => setSelectedComponent("AddTab")}
         >
           <ListItemAvatar>
@@ -75,7 +109,7 @@ export default function Dashboard() {
           <ListItemText primary="Add" sx={listItemTextStyles} />
         </ListItem>
         <ListItem
-          sx={listItemStyles}
+          sx={getListItemStyles("InventoryTab")}
           onClick={() => setSelectedComponent("InventoryTab")}
         >
           <ListItemAvatar>
