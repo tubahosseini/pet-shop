@@ -9,7 +9,6 @@ import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/router";
 import {
   buttonSubmitStyles,
-  formContainerStyles,
   iconBoxStyles,
   innerBoxStyles,
   outerBoxStyles,
@@ -51,7 +50,6 @@ const SignIn: React.FC = () => {
               Please enter the information you entered while registering.
             </Typography>
           </Box>
-          <Box sx={formContainerStyles}>
             <Controller
               name="username"
               control={control}
@@ -63,6 +61,7 @@ const SignIn: React.FC = () => {
                   type="text"
                   label="Username"
                   required
+                  fullWidth
                 />
               )}
             />
@@ -77,13 +76,13 @@ const SignIn: React.FC = () => {
                   type="password"
                   label="Password"
                   required
+                  fullWidth
                 />
               )}
             />
             <Button type="submit" sx={buttonSubmitStyles}>
               Sign In
             </Button>
-          </Box>
         </form>
       </Box>
       <ChangeAuth pText="Don't have an account?" buttonText="Sign Up" />

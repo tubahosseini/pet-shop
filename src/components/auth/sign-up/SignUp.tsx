@@ -19,6 +19,7 @@ import {
   typographyInfoStyles,
   textFieldStyles,
   buttonSubmitStyles,
+  mobileStepperStyles,
 } from "../styles/auth.styles";
 import { useSignUpNewUser } from "../hooks";
 import validationSchema from "./validationSchema";
@@ -204,7 +205,7 @@ const SignUp: React.FC = () => {
           steps={2}
           position="static"
           activeStep={activeStep}
-          sx={{ maxWidth: 400, flexGrow: 1 }}
+          sx={mobileStepperStyles}
           nextButton={
             <Button
               size="small"

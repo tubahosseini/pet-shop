@@ -1,8 +1,8 @@
 export const outerBoxStyles = {
   display: "flex",
   flexDirection: {
-    xs: "column", // mobile devices
-    sm: "row", // tablets and up
+    xs: "column",
+    sm: "row",
   },
   height: "100vh",
   overflow: "hidden",
@@ -13,10 +13,7 @@ export const innerBoxStyles = {
   flexDirection: "column",
   alignItems: "center",
   textAlign: "center",
-  justifyContent: {
-    xs: "start",
-    sm: "center", // tablets and up
-  },
+  justifyContent: "start",
   width: {
     sm: "50%",
   },
@@ -139,4 +136,11 @@ export const changeAuthButtonStyles = {
   m: 1 / 2,
   color: "primary.light",
   borderRadius: 3,
+};
+
+export const mobileStepperStyles = {
+  maxWidth: 400,
+  flexGrow: 1,
+  position: "fixed",
+  bottom: { xs: 200, sm: 100 },
 };
