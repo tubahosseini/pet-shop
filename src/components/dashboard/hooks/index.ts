@@ -1,11 +1,16 @@
-import { getAllProducts } from "@/components/dashboard/services";
+import { getAllProducts, getAllOrders } from "@/components/dashboard/services";
 import { useQuery } from "@tanstack/react-query";
 
-const useGetAllProducts = () => {
+export const useGetAllProducts = () => {
   return useQuery({
     queryKey: ["allProducts"],
     queryFn: getAllProducts,
   });
 };
 
-export default useGetAllProducts;
+export const useGetAllOrders = () => {
+  return useQuery({
+    queryKey: ["allOrders"],
+    queryFn: getAllOrders,
+  });
+};
