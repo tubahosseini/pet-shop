@@ -12,15 +12,24 @@ import { useState } from "react";
 import { useGetAllOrders } from "../../hooks";
 import { formatDateTime } from "@/utils/formatDateTime";
 import Collapse from "@mui/material/Collapse";
+import { Box, Button, IconButton, Typography } from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 interface Order {
   _id: string;
   user: {
     firstname: string;
     lastname: string;
+    address: string;
+    phoneNumber: string;
   };
+  products: [
+    { product: { name: string; price: string }; count: string; _id: string }
+  ];
   totalPrice: number;
   createdAt: string;
+  deliveryDate: string;
 }
 
 export default function OrdersTab() {
@@ -28,6 +37,7 @@ export default function OrdersTab() {
   const [orderBy, setOrderBy] = useState<keyof Order>("_id");
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [openRow, setOpenRow] = useState<string | null>(null);
+  const [open, setOpen] = React.useState(false); // for showing the icon!
 
   const handleRequestSort = (property: keyof Order) => {
     const isAsc = orderBy === property && order === "asc";
@@ -92,7 +102,7 @@ export default function OrdersTab() {
                 direction={orderBy === "createdAt" ? order : "asc"}
                 onClick={() => handleRequestSort("createdAt")}
               >
-                Order's Date
+                Order Date
               </TableSortLabel>
             </TableCell>
             <TableCell></TableCell>
@@ -107,19 +117,96 @@ export default function OrdersTab() {
                 <TableCell>
                   {formatDateTime(new Date(item.createdAt))}
                 </TableCell>
-                <TableCell>more info!</TableCell>
+                <TableCell>
+                  <IconButton
+                    aria-label="expand row"
+                    size="small"
+                    onClick={() => setOpen(!open)}
+                  >
+                    {open ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
+                  </IconButton>
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell
                   style={{ paddingBottom: 0, paddingTop: 0 }}
                   colSpan={4}
+                  sx={{ bgcolor: "#a389ff17", p: 3 }}
                 >
                   <Collapse
                     in={openRow === item._id}
                     timeout="auto"
                     unmountOnExit
                   >
-                    <div>{item.user.firstname}</div>
+                    <Box sx={{ py: 3 }}>
+                      <Typography sx={{ color: "primary.main", mb: 2 }}>
+                        Order Details:
+                      </Typography>
+                      <Typography sx={{ display: "flex", gap: 1 }}>
+                        <Typography sx={{ color: "primary.main" }}>
+                          Address:
+                        </Typography>{" "}
+                        {item.user.address}
+                      </Typography>
+                      <Typography sx={{ display: "flex", gap: 1 }}>
+                        <Typography sx={{ color: "primary.main" }}>
+                          Phone Number:{" "}
+                        </Typography>{" "}
+                        {item.user.phoneNumber}
+                      </Typography>
+                      <Typography sx={{ display: "flex", gap: 1 }}>
+                        <Typography sx={{ color: "primary.main" }}>
+                          Order Date:{" "}
+                        </Typography>{" "}
+                        {formatDateTime(new Date(item.createdAt))}
+                      </Typography>
+                      <Typography sx={{ display: "flex", gap: 1 }}>
+                        <Typography sx={{ color: "primary.main" }}>
+                          Delivery Date:
+                        </Typography>
+                        {formatDateTime(new Date(item.deliveryDate))}
+                      </Typography>
+                      <Table
+                        size="small"
+                        aria-label="purchases"
+                        sx={{ my: 2, maxWidth: 700 }}
+                      >
+                        <TableHead>
+                          <TableRow>
+                            <TableCell sx={{ color: "primary.main" }}>
+                              Products
+                            </TableCell>
+                            <TableCell sx={{ color: "primary.main" }}>
+                              Price
+                            </TableCell>
+                            <TableCell sx={{ color: "primary.main" }}>
+                              Quantity
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {item.products.map((itemProduct) => (
+                            <TableRow key={itemProduct._id}>
+                              <TableCell>{itemProduct.product.name}</TableCell>
+                              <TableCell>{itemProduct.product.price}</TableCell>
+                              <TableCell>{itemProduct.count}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                      <Button
+                        sx={{
+                          bgcolor: "primary.main",
+                          color: "primary.light",
+                          "&:hover": {
+                            bgcolor: "primary.main",
+                            color: "primary.light",
+                          },
+                        }}
+                      >
+                        Delivered
+                      </Button>
+                    </Box>
                   </Collapse>
                 </TableCell>
               </TableRow>
