@@ -21,13 +21,12 @@ import {
   listStyles,
   logoIconStyles,
 } from "./styles/dashboard.styles";
-import ListIcon from "@mui/icons-material/List";
 import DashboardTab from "./tabs/dashboard-tab/DashboardTab";
 import ProductsTab from "./tabs/products-tab/ProductsTab";
 import AddTab from "./tabs/add-tab/AddTab";
 import InventoryTab from "./tabs/inventory-tab/InventoryTab";
-import useGetAllProducts from "@/components/dashboard/hooks";
 import OrdersTab from "./tabs/orders-tab/OrdersTab";
+import { useGetAllProducts } from "./hooks";
 
 export default function Dashboard() {
   const { data } = useGetAllProducts();

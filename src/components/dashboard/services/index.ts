@@ -1,18 +1,3 @@
-// import { api } from "./api.config";
-
-// export const getAllProducts = (): Promise<any> => {
-//   console.log("response");
-//   try {
-//     const response = api.get(`/products?page=1&limit=30`);
-//     return response;
-//   } catch (error: any) {
-//     if (error.response) {
-//       console.error(error.response.data);
-//     }
-//     throw error;
-//   }
-// };
-
 import { api } from "../../../services/api.config";
 
 export const getAllProducts = async (): Promise<any> => {
@@ -22,6 +7,18 @@ export const getAllProducts = async (): Promise<any> => {
   } catch (error: any) {
     if (error.response) {
       console.error(error.response.data);
+    }
+    throw error;
+  }
+};
+
+export const getAllOrders = async (): Promise<any> => {
+  try {
+    const response = await api.get(`/orders`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error("error is:", error.response.data);
     }
     throw error;
   }
