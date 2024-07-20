@@ -37,7 +37,6 @@ export default function OrdersTab() {
   const [orderBy, setOrderBy] = useState<keyof Order>("_id");
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [openRow, setOpenRow] = useState<string | null>(null);
-  const [open, setOpen] = React.useState(false); // for showing the icon!
 
   const handleRequestSort = (property: keyof Order) => {
     const isAsc = orderBy === property && order === "asc";
@@ -121,9 +120,15 @@ export default function OrdersTab() {
                   <IconButton
                     aria-label="expand row"
                     size="small"
-                    onClick={() => setOpen(!open)}
+                    onClick={(event) => {
+                      handleRowClick(item._id);
+                    }}
                   >
-                    {open ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
+                    {openRow === item._id ? (
+                      <KeyboardArrowUpIcon />
+                    ) : (
+                      <KeyboardArrowDownIcon />
+                    )}
                   </IconButton>
                 </TableCell>
               </TableRow>
