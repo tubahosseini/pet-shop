@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Link,
@@ -81,11 +81,17 @@ export default function Header() {
   const [openDogs, setOpenDogs] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
+
   const theme = useTheme();
   const router = useRouter();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
-  const userRole = getCookie("role") as string;
-  // console.log(userRole);
+
+  useEffect(() => {
+    // Client-side only logic
+    const role = getCookie("role") as string;
+    setUserRole(role);
+  }, []);
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -113,7 +119,6 @@ export default function Header() {
       setCartDrawerOpen(open);
     };
 
-  // Determine the appropriate link based on userRole
   const renderUserRoleListItem = () => {
     if (userRole === "ADMIN") {
       return (
