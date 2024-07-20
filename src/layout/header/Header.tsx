@@ -29,10 +29,11 @@ import {
   KeyboardArrowUp,
   Dashboard,
   Person,
+  Logout,
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { routes } from "@/constants/routes";
-import { getCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -88,7 +89,6 @@ export default function Header() {
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
   useEffect(() => {
-    // Client-side only logic
     const role = getCookie("role") as string;
     setUserRole(role);
   }, []);
@@ -240,6 +240,15 @@ export default function Header() {
         </ListItem>
         <Divider />
         {renderUserRoleListItem()}
+        <Divider />
+        {userRole && (
+          <ListItem>
+            <IconButton onClick={() => setCookie("role", "")}>
+              <Logout sx={{ color: "primary.main", mr: 1 }} />
+            </IconButton>
+            <ListItemText primary="Sign Out" />
+          </ListItem>
+        )}
       </List>
     </Box>
   );
@@ -344,6 +353,16 @@ export default function Header() {
           }}
           onClick={toggleCartDrawer(true)}
         />
+        {userRole && (
+          <Logout
+            sx={{
+              color: "primary.main",
+              fontSize: 30,
+              display: { xs: "none", md: "block" },
+            }}
+            onClick={() => setCookie("role", "")}
+          />
+        )}
         <Menu
           sx={{
             color: "primary.main",
