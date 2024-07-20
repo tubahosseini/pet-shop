@@ -1,5 +1,6 @@
 import {
   Box,
+  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -27,10 +28,13 @@ import AddTab from "./tabs/add-tab/AddTab";
 import InventoryTab from "./tabs/inventory-tab/InventoryTab";
 import OrdersTab from "./tabs/orders-tab/OrdersTab";
 import { useGetAllProducts } from "./hooks";
+import { setCookie } from "cookies-next";
+import { useRouter } from "next/router";
+import { routes } from "@/constants/routes";
 
 export default function Dashboard() {
   const { data } = useGetAllProducts();
-
+  const router = useRouter();
   const [selectedComponent, setSelectedComponent] = useState("DashboardTab");
 
   const renderComponent = () => {
@@ -87,7 +91,9 @@ export default function Dashboard() {
   return (
     <Box sx={{ display: "flex" }}>
       <List sx={listStyles}>
-        <Pets sx={logoIconStyles} />
+        <IconButton onClick={() => router.push(routes.home)}>
+          <Pets sx={logoIconStyles} />
+        </IconButton>
         <ListItem
           sx={getListItemStyles("DashboardTab")}
           onClick={() => setSelectedComponent("DashboardTab")}
@@ -135,7 +141,7 @@ export default function Dashboard() {
         </ListItem>
         <ListItem sx={listItemStyles}>
           <ListItemAvatar>
-            <Logout />
+            <Logout onClick={() => setCookie("role", "")} />
           </ListItemAvatar>
           <ListItemText primary="Sign Out" sx={listItemTextStyles} />
         </ListItem>
