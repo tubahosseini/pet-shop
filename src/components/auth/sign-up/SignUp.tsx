@@ -22,7 +22,9 @@ import {
   mobileStepperStyles,
 } from "../styles/auth.styles";
 import { useSignUpNewUser } from "../hooks";
+import { useRouter } from "next/router";
 import validationSchema from "./validationSchema";
+import { routes } from "@/constants/routes";
 
 interface SignUpFormInputs {
   firstname: string;
@@ -45,6 +47,7 @@ const SignUp: React.FC = () => {
   };
 
   const { mutate } = useSignUpNewUser();
+  const router = useRouter();
 
   const {
     control,
@@ -61,7 +64,10 @@ const SignUp: React.FC = () => {
       },
       {
         onSuccess: () => {
-          toast.success(`You are successfully signed up ${data.username}`);
+          router.push(routes.signIn);
+          toast.success(
+            `You are successfully signed up ${data.username} please Sig in now !`
+          );
         },
         onError: (error) => {
           toast.error("Sign up failed");
