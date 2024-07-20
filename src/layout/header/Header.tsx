@@ -27,9 +27,12 @@ import {
   VpnKey,
   KeyboardArrowDown,
   KeyboardArrowUp,
+  Dashboard,
+  Person,
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { routes } from "@/constants/routes";
+import { getCookie } from "cookies-next";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -81,6 +84,8 @@ export default function Header() {
   const theme = useTheme();
   const router = useRouter();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const userRole = getCookie("role") as string;
+  // console.log(userRole);
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -107,6 +112,54 @@ export default function Header() {
       }
       setCartDrawerOpen(open);
     };
+
+  // Determine the appropriate link based on userRole
+  const renderUserRoleListItem = () => {
+    if (userRole === "ADMIN") {
+      return (
+        <ListItem component="a" href={routes.dashboard}>
+          <Dashboard sx={{ color: "primary.main", mr: 1 }} />
+          <ListItemText primary="Dashboard" />
+        </ListItem>
+      );
+    }
+    if (userRole === "USER") {
+      return (
+        <ListItem component="a" href={routes.userProfile}>
+          <Person sx={{ color: "primary.main", mr: 1 }} />
+          <ListItemText primary="Profile" />
+        </ListItem>
+      );
+    }
+    return (
+      <ListItem component="a" href={routes.signIn}>
+        <VpnKey sx={{ color: "primary.main", mr: 1 }} />
+        <ListItemText primary="Sign In" />
+      </ListItem>
+    );
+  };
+
+  const renderUserRoleLink = () => {
+    if (userRole === "ADMIN") {
+      return (
+        <Link href={routes.dashboard} sx={{ textDecoration: "none" }}>
+          Dashboard
+        </Link>
+      );
+    }
+    if (userRole === "USER") {
+      return (
+        <Link href={routes.userProfile} sx={{ textDecoration: "none" }}>
+          Profile
+        </Link>
+      );
+    }
+    return (
+      <Link href={routes.signIn} sx={{ textDecoration: "none" }}>
+        Sign In
+      </Link>
+    );
+  };
 
   const drawerList = (
     <Box sx={{ width: 300 }} role="presentation">
@@ -181,10 +234,7 @@ export default function Header() {
           <ListItemText primary="Contact Us" />
         </ListItem>
         <Divider />
-        <ListItem component="a" href={routes.signIn}>
-          <VpnKey sx={{ color: "primary.main", mr: 1 }} />
-          <ListItemText primary="Sign In" />
-        </ListItem>
+        {renderUserRoleListItem()}
       </List>
     </Box>
   );
@@ -262,9 +312,7 @@ export default function Header() {
         <Link href={routes.contactUs} sx={{ textDecoration: "none" }}>
           Contact Us
         </Link>
-        <Link href={routes.signIn} sx={{ textDecoration: "none" }}>
-          Sign In
-        </Link>
+        {renderUserRoleLink()}
       </Box>
       <Box sx={{ display: "flex", gap: 1 }}>
         <Search>

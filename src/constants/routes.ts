@@ -8,4 +8,5 @@ export const routes = {
   contactUs: "/contact-us",
   aboutUs: "/about-us",
   shop: "/shop",
+  userProfile: "/user-profile",
 };
