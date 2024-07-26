@@ -8,7 +8,8 @@ interface ProductCardProps {
     id: number;
     name: string;
     description: string;
-    image: string;
+    images: string;
+    price: string;
   };
 }
 
@@ -30,7 +31,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     >
       <Box>
         <Image
-          src={product.image}
+          src={`http://${product.images}`}
           alt={product.name}
           width={192}
           height={144}
@@ -49,7 +50,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {product.name}
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography>$ 229</Typography>
+        <Typography>$ {product.price}</Typography>
         <ShoppingCart sx={{ cursor: "pointer" }} />
       </Box>
     </Box>
