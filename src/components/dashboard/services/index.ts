@@ -11,3 +11,15 @@ export const getAllOrders = async (): Promise<any> => {
     throw error;
   }
 };
+
+export const removeProductById = async (id: string): Promise<any> => {
+  try {
+    const response = await api.delete(`/products/${id}`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error("Error is:", error.response.data);
+    }
+    throw error;
+  }
+};
