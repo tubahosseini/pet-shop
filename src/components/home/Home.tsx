@@ -3,12 +3,15 @@ import Image from "next/image";
 import React from "react";
 import animalsLanding from "@/assets/images/home/animalsLanding.svg";
 import dogLookUp from "@/assets/images/home/dogLookUp.svg";
-import ProductCard from "../shared/ProductCard";
+// import ProductCard from "../shared/ProductCard";
 import Subscribe from "./subscribe/Subscribe";
 import TopBrands from "./top-brands/TopBrands";
 import Categories from "./categories/Categories";
+// import { useGetAllProducts } from "@/hooks";
 
 export default function Home() {
+  // const { data } = useGetAllProducts();
+  // const products = data.data.products;
   return (
     <Container>
       <Box
@@ -141,7 +144,7 @@ export default function Home() {
           gap: 2,
         }}
       >
-        <ProductCard />
+        {/* <ProductCard product={products}/> */}
       </Box>
       <Typography
         sx={{

@@ -11,3 +11,15 @@ export const getAllProducts = async (): Promise<any> => {
     throw error;
   }
 };
+
+export async function getProductById(id: any): Promise<any> {
+  try {
+    const response = await api.get(`/products/${id}`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error(error.response.data);
+    }
+    throw error;
+  }
+}

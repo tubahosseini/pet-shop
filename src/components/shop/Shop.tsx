@@ -5,7 +5,7 @@ import { useGetAllProducts } from "@/hooks";
 
 export default function Shop() {
   const { data } = useGetAllProducts();
-  const products = data.data.products;
+  const products = data?.data.products;
 
   return (
     <Container sx={{ my: 3, py: 2 }}>
@@ -15,7 +15,7 @@ export default function Shop() {
         </Grid>
         <Grid item xs={12} md={10}>
           <Grid container spacing={2}>
-            {products.map((product: any) => (
+            {products?.map((product: any) => (
               <Grid item xs={6} sm={4} md={3} key={product.id}>
                 <ProductCard product={product} />
               </Grid>
