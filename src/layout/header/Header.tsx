@@ -18,7 +18,6 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import {
-  Favorite,
   ShoppingCart,
   Menu,
   AutoStories,
@@ -83,9 +82,7 @@ export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
-  // State to control the visibility of the header
-  const [showHeader, setShowHeader] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+
 
   const theme = useTheme();
   const router = useRouter();
@@ -95,30 +92,6 @@ export default function Header() {
     const role = getCookie("role") as string;
     setUserRole(role);
   }, []);
-
-  // Function to control header visibility based on scroll direction
-  const controlHeader = () => {
-    if (typeof window !== "undefined") {
-      if (window.scrollY > lastScrollY) {
-        // If scrolling down, hide the header
-        setShowHeader(false);
-      } else {
-        // If scrolling up, show the header
-        setShowHeader(true);
-      }
-      setLastScrollY(window.scrollY);
-    }
-  };
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("scroll", controlHeader);
-
-      return () => {
-        window.removeEventListener("scroll", controlHeader);
-      };
-    }
-  }, [lastScrollY]);
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -305,9 +278,8 @@ export default function Header() {
         px: { xs: 3, md: 8 },
         bgcolor: "primary.light",
         position: "fixed",
+        top: 0,
         zIndex: 2,
-        transform: showHeader ? "translateY(0)" : "translateY(-100%)",
-        transition: "transform 0.3s ease-in-out",
       }}
     >
       <Box
@@ -370,13 +342,6 @@ export default function Header() {
             inputProps={{ "aria-label": "search" }}
           />
         </Search>
-        <Favorite
-          sx={{
-            color: "primary.main",
-            fontSize: 30,
-            display: { xs: "none", md: "block" },
-          }}
-        />
         <ShoppingCart
           sx={{
             color: "primary.main",

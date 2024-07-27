@@ -8,9 +8,14 @@ export default function Shop() {
   const products = data?.data.products;
 
   return (
-    <Container sx={{ my: 3, py: 2 }}>
+    <Container sx={{ my: 3, pb: 2, pt: 12 }}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={2} sx={{ bgcolor: "pink" }}>
+        <Grid
+          item
+          xs={12}
+          md={2}
+          sx={{ bgcolor: "pink", ml: { xs: 3, md: 0 } }}
+        >
           bla bla bla
         </Grid>
         <Grid item xs={12} md={10}>
