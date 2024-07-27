@@ -83,6 +83,9 @@ export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
+  // State to control the visibility of the header
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const theme = useTheme();
   const router = useRouter();
@@ -92,6 +95,30 @@ export default function Header() {
     const role = getCookie("role") as string;
     setUserRole(role);
   }, []);
+
+  // Function to control header visibility based on scroll direction
+  const controlHeader = () => {
+    if (typeof window !== "undefined") {
+      if (window.scrollY > lastScrollY) {
+        // If scrolling down, hide the header
+        setShowHeader(false);
+      } else {
+        // If scrolling up, show the header
+        setShowHeader(true);
+      }
+      setLastScrollY(window.scrollY);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", controlHeader);
+
+      return () => {
+        window.removeEventListener("scroll", controlHeader);
+      };
+    }
+  }, [lastScrollY]);
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -276,6 +303,11 @@ export default function Header() {
         fontSize: 15,
         py: 1,
         px: { xs: 3, md: 8 },
+        bgcolor: "primary.light",
+        position: "fixed",
+        zIndex: 2,
+        transform: showHeader ? "translateY(0)" : "translateY(-100%)",
+        transition: "transform 0.3s ease-in-out",
       }}
     >
       <Box

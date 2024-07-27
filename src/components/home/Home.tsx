@@ -13,7 +13,7 @@ export default function Home() {
   // const { data } = useGetAllProducts();
   // const products = data.data.products;
   return (
-    <Container>
+    <Container sx={{pt:10}}>
       <Box
         sx={{
           display: "flex",
