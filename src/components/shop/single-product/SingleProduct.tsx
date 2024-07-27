@@ -16,7 +16,7 @@ export default function SingleProduct({ id }: any) {
   }
 
   return (
-    <Container sx={{ py: 3 }}>
+    <Container sx={{ pb: 3, pt:13 }}>
       <Typography sx={{ fontSize: 30, mb: 3, maxWidth: 550 }}>
         {product.name}
       </Typography>

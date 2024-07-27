@@ -18,7 +18,6 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import {
-  Favorite,
   ShoppingCart,
   Menu,
   AutoStories,
@@ -276,6 +275,10 @@ export default function Header() {
         fontSize: 15,
         py: 1,
         px: { xs: 3, md: 8 },
+        bgcolor: "primary.light",
+        position: "fixed",
+        top: 0,
+        zIndex: 2,
       }}
     >
       <Box
@@ -338,13 +341,6 @@ export default function Header() {
             inputProps={{ "aria-label": "search" }}
           />
         </Search>
-        <Favorite
-          sx={{
-            color: "primary.main",
-            fontSize: 30,
-            display: { xs: "none", md: "block" },
-          }}
-        />
         <ShoppingCart
           sx={{
             color: "primary.main",
