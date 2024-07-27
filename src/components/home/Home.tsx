@@ -8,7 +8,9 @@ import Categories from "./categories/Categories";
 import BusinessStats from "./business-stats/BusinessStats";
 import Introduction from "./introduction/Introduction";
 import orangePawPrint from "@/assets/images/home/orangePawPrint.svg";
+import purplePawPrint from "@/assets/images/home/purplePawPrint.svg";
 import { Pets } from "@mui/icons-material";
+import LatestProducts from "./latest-products/LatestProducts";
 
 export default function Home() {
   return (
@@ -16,7 +18,7 @@ export default function Home() {
       <Box
         sx={{
           position: "absolute",
-          top: 110,
+          top: 60,
           left: 0,
           width: "100%",
           height: "40%",
@@ -26,6 +28,44 @@ export default function Home() {
       >
         <Image
           src={orangePawPrint}
+          alt="paw prints"
+          layout="fill"
+          objectFit="cover"
+          quality={100}
+        />
+      </Box>
+      <Box
+        sx={{
+          position: "absolute",
+          top: 1350,
+          left: 0,
+          width: "100%",
+          height: "40%",
+          zIndex: -1,
+          overflow: "hidden",
+        }}
+      >
+        <Image
+          src={purplePawPrint}
+          alt="paw prints"
+          layout="fill"
+          objectFit="cover"
+          quality={100}
+        />
+      </Box>
+      <Box
+        sx={{
+          position: "absolute",
+          top: 2100,
+          left: 0,
+          width: "100%",
+          height: "40%",
+          zIndex: -1,
+          overflow: "hidden",
+        }}
+      >
+        <Image
+          src={purplePawPrint}
           alt="paw prints"
           layout="fill"
           objectFit="cover"
@@ -46,21 +86,21 @@ export default function Home() {
         >
           <Typography
             sx={{
-              fontSize: 45,
+              fontSize: { xs: 45, md: 70 },
               color: "primary.main",
               py: 10,
               fontWeight: "bold",
-              ml: { md: 10 },
+              ml: { md: 7 },
             }}
           >
             FOR THE LOVE <br /> OF PAWS AND <br /> CLAWS.{" "}
             <Pets sx={{ fontSize: 50, transform: "rotate(30deg)" }} />
           </Typography>
-          <Box sx={{ mr: { md: 10 } }}>
+          <Box sx={{ mr: { md: 7 } }}>
             <Image
               src={animalsLanding}
               alt="a picture of animals"
-              width={400}
+              width={500}
               height={400}
             />
           </Box>
@@ -75,7 +115,7 @@ export default function Home() {
             alignItems: "center",
             mb: 3,
             fontWeight: "bold",
-            mt: 25,
+            mt: 30,
           }}
         >
           SHOP BASED ON PETS
@@ -90,21 +130,32 @@ export default function Home() {
             alignItems: "center",
             mb: 1,
             fontWeight: "bold",
-            mt: 5,
+            mt: 15,
           }}
         >
-          BEST SELLERS
+          LATEST PRODUCTS
         </Typography>
         <Box
           sx={{
-            border: "1px solid orange",
+            // border: "1px solid orange",
             width: "100%",
             mb: 6,
             p: 2,
             display: "flex",
             gap: 2,
+            overflowX: "auto",
+            whiteSpace: "nowrap",
+            "&::-webkit-scrollbar": {
+              height: "8px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,0.3)",
+              borderRadius: "4px",
+            },
           }}
-        ></Box>
+        >
+          <LatestProducts />
+        </Box>
         <BusinessStats />
         <Typography
           sx={{
@@ -114,14 +165,16 @@ export default function Home() {
             justifyContent: "center",
             alignItems: "center",
             mb: 1,
-            mt: 8,
+            mt: 12,
             fontWeight: "bold",
           }}
         >
           TOP BRANDS
         </Typography>
         <TopBrands />
-        <Box sx={{ display: "flex", justifyContent: "center", marginY: 8 }}>
+        <Box
+          sx={{ display: "flex", justifyContent: "center", marginY: 8, mt: 10 }}
+        >
           <Subscribe />
         </Box>
       </Container>

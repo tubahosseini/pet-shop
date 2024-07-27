@@ -5,11 +5,12 @@ export default function BusinessStats() {
   return (
     <Box
       sx={{
-        my: 4,
+        mb: 4,
         display: "flex",
         flexDirection: { xs: "column", sm: "row" },
         alignItems: "center",
         gap: 3,
+        mt:15
       }}
     >
       <Box
