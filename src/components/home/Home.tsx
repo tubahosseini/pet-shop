@@ -14,14 +14,14 @@ import LatestProducts from "./latest-products/LatestProducts";
 
 export default function Home() {
   return (
-    <Box sx={{ position: "relative" }}>
+    <Box>
       <Box
         sx={{
           position: "absolute",
-          top: 60,
+          top: 430,
           left: 0,
           width: "100%",
-          height: "40%",
+          height: 800,
           zIndex: -1,
           overflow: "hidden",
         }}
@@ -37,29 +37,10 @@ export default function Home() {
       <Box
         sx={{
           position: "absolute",
-          top: 1350,
+          top: 2300,
           left: 0,
           width: "100%",
-          height: "40%",
-          zIndex: -1,
-          overflow: "hidden",
-        }}
-      >
-        <Image
-          src={purplePawPrint}
-          alt="paw prints"
-          layout="fill"
-          objectFit="cover"
-          quality={100}
-        />
-      </Box>
-      <Box
-        sx={{
-          position: "absolute",
-          top: 2100,
-          left: 0,
-          width: "100%",
-          height: "40%",
+          height: 900,
           zIndex: -1,
           overflow: "hidden",
         }}
@@ -137,7 +118,6 @@ export default function Home() {
         </Typography>
         <Box
           sx={{
-            // border: "1px solid orange",
             width: "100%",
             mb: 6,
             p: 2,
