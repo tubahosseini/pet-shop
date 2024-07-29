@@ -1,4 +1,5 @@
 import { api } from "../../../services/api.config";
+import { IProduct } from "../hooks/types";
 
 export const getAllOrders = async (): Promise<any> => {
   try {
@@ -20,6 +21,21 @@ export const removeProductById = async (id: string): Promise<any> => {
     if (error.response) {
       console.error("Error is:", error.response.data);
     }
+    throw error;
+  }
+};
+
+export const addNewProduct = async (newProductData: IProduct) => {
+  try {
+    const userResponse = await api.post(`/products`, newProductData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return {
+      product: userResponse.data,
+    };
+  } catch (error) {
     throw error;
   }
 };

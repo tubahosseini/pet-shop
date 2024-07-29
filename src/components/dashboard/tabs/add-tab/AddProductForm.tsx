@@ -1,85 +1,188 @@
 import {
   Box,
   Button,
+  TextField,
+  Select,
+  MenuItem,
   FormControl,
   InputLabel,
-  MenuItem,
-  Select,
-  TextField,
 } from "@mui/material";
 import React from "react";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
+import { useAddNewProduct } from "../../hooks";
+
+interface AddProductFormInputs {
+  name: string;
+  price: string;
+  quantity: string;
+  brand: string;
+  description: string;
+  category: string;
+  subcategory: string;
+  images: any;
+}
 
 export default function AddProductForm() {
+  const { mutate } = useAddNewProduct();
+  const { control, handleSubmit, watch } = useForm<AddProductFormInputs>();
+  const selectedCategory = watch("category"); //! what does watch do?
+
+  const onSubmit: SubmitHandler<AddProductFormInputs> = (data) => {
+    mutate(
+      {
+        newProductData: data,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Product Added Successfully! 😍");
+        },
+        onError: (error) => {
+          toast.error("Failed!");
+          console.error(error.message);
+        },
+      }
+    );
+  };
+
+  const subcategories =
+    selectedCategory === "66955b1363edcddc55f0b780"
+      ? [
+          { label: "Dog Food", value: "66957cee63edcddc55f0b7bd" },
+          { label: "Dog Clothes", value: "66957d0163edcddc55f0b7c1" },
+          { label: "Dog Beds", value: "66957d1863edcddc55f0b7c5" },
+        ]
+      : selectedCategory === "66955b2363edcddc55f0b784"
+      ? [
+          { label: "Cat Foods", value: "66957d7563edcddc55f0b7c9" },
+          { label: "Cat Carriers", value: "66957d9e63edcddc55f0b7d1" },
+          { label: "Cat Toys", value: "66957d9163edcddc55f0b7cd" },
+        ]
+      : [];
+
   return (
-    <>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <TextField
-          id="standard-basic"
-          label="Name"
-          variant="standard"
-          fullWidth
-          required
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              type="text"
+              variant="standard"
+              label="name"
+              required
+              fullWidth
+            />
+          )}
         />
-        <TextField
-          id="standard-basic"
-          label="Price"
-          variant="standard"
-          fullWidth
-          required
+        <Controller
+          name="price"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              type="text"
+              variant="standard"
+              label="price"
+              required
+              fullWidth
+            />
+          )}
         />
-        <TextField
-          id="standard-basic"
-          label="Quantity"
-          variant="standard"
-          fullWidth
-          required
+        <Controller
+          name="quantity"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              type="text"
+              variant="standard"
+              label="quantity"
+              required
+              fullWidth
+            />
+          )}
         />
-        <TextField
-          id="standard-basic"
-          label="Brand"
-          variant="standard"
-          fullWidth
-          required
+        <Controller
+          name="brand"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              type="text"
+              variant="standard"
+              label="brand"
+              required
+              fullWidth
+            />
+          )}
         />
-        <TextField
-          id="standard-basic"
-          label="Description"
-          variant="standard"
-          fullWidth
-          required
+        <Controller
+          name="description"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              type="text"
+              variant="standard"
+              label="description"
+              required
+              fullWidth
+            />
+          )}
         />
         <FormControl variant="standard" fullWidth required>
-          <InputLabel>Categoty</InputLabel>
-          <Select label="Category" fullWidth>
-            <MenuItem>Cats</MenuItem>
-            <MenuItem>Dogs</MenuItem>
-          </Select>
+          <InputLabel>Category</InputLabel>
+          <Controller
+            name="category"
+            control={control}
+            render={({ field }) => (
+              <Select {...field} label="category">
+                <MenuItem value="66955b2363edcddc55f0b784">Cats</MenuItem>
+                <MenuItem value="66955b1363edcddc55f0b780">Dogs</MenuItem>
+              </Select>
+            )}
+          />
         </FormControl>
-        <FormControl variant="standard" fullWidth required sx={{ mb: 2 }}>
-          <InputLabel>Sub Categoty</InputLabel>
-          <Select label="Sub Category" fullWidth>
-            <MenuItem>Cats Foods</MenuItem>
-            <MenuItem>Cats Toys</MenuItem>
-            <MenuItem>Dogs Foods</MenuItem>
-            <MenuItem>Dogs Clothes</MenuItem>
-            <MenuItem>Dogs Beds</MenuItem>
-          </Select>
+        <FormControl variant="standard" fullWidth required>
+          <InputLabel>Subcategory</InputLabel>
+          <Controller
+            name="subcategory"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                label="subcategory"
+                disabled={!selectedCategory}
+                sx={{ mb: 3 }}
+              >
+                {subcategories.map((sub) => (
+                  <MenuItem key={sub.value} value={sub.value}>
+                    {sub.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
         </FormControl>
         <input type="file" />
+        <Button
+          type="submit"
+          sx={{
+            bgcolor: "primary.main",
+            py: 0.7,
+            px: 4,
+            borderRadius: 3,
+            color: "primary.light",
+            mt: 3,
+            "&:hover": { bgcolor: "primary.main" },
+          }}
+        >
+          Add
+        </Button>
       </Box>
-      <Button
-        sx={{
-          bgcolor: "primary.main",
-          py: 0.7,
-          px: 4,
-          borderRadius: 3,
-          color: "primary.light",
-          mt: 5,
-          "&:hover": { bgcolor: "primary.main" },
-        }}
-      >
-        Add
-      </Button>
-    </>
+    </form>
   );
 }
