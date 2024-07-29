@@ -8,9 +8,9 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import { Delete, Edit } from "@mui/icons-material";
 import { useState } from "react";
 import Image from "next/image";
+import { TextField, Typography } from "@mui/material";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -47,7 +47,11 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
 }
 
 export default function InventoryTab(data: any) {
-  // console.log(data.data.data.products);
+  const [isPriceClicked, setIsPriceClicked] = useState<string | null>(null);
+  const [isQuantityClicked, setIsQuantityClicked] = useState<string | null>(
+    null
+  );
+
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] =
     useState<keyof (typeof data.data.products)[0]>("name");
@@ -119,7 +123,7 @@ export default function InventoryTab(data: any) {
         </TableHead>
         <TableBody>
           {sortedRows?.slice(page * 5, page * 5 + 5).map((product: any) => (
-            <TableRow key={product.id}>
+            <TableRow key={product._id}>
               <TableCell component="th" scope="row">
                 <Image
                   width={80}
@@ -129,8 +133,37 @@ export default function InventoryTab(data: any) {
                 />
               </TableCell>
               <TableCell>{product.name}</TableCell>
-              <TableCell>{`€ ${product.price}`}</TableCell>
-              <TableCell>{product.quantity}</TableCell>
+              <TableCell>
+                {isPriceClicked === product._id ? (
+                  <TextField autoFocus onBlur={() => setIsPriceClicked(null)} />
+                ) : (
+                  <Typography
+                    id={product._id}
+                    onClick={() =>
+                      product._id && setIsPriceClicked(product._id)
+                    }
+                  >
+                    {product.price}
+                  </Typography>
+                )}
+              </TableCell>
+              <TableCell>
+                {isQuantityClicked === product._id ? (
+                  <TextField
+                    autoFocus
+                    onBlur={() => setIsQuantityClicked(null)}
+                  />
+                ) : (
+                  <Typography
+                    id={product._id}
+                    onClick={() =>
+                      product._id && setIsQuantityClicked(product._id)
+                    }
+                  >
+                    {product.quantity}
+                  </Typography>
+                )}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
