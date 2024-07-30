@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -7,7 +8,6 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import React from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useAddNewProduct } from "../../hooks";
@@ -26,13 +26,22 @@ interface AddProductFormInputs {
 export default function AddProductForm() {
   const { mutate } = useAddNewProduct();
   const { control, handleSubmit, watch } = useForm<AddProductFormInputs>();
-  const selectedCategory = watch("category"); //! what does watch do?
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const selectedCategory = watch("category"); //! to check which category is selected
 
   const onSubmit: SubmitHandler<AddProductFormInputs> = (data) => {
+    const formData = new FormData();
+    formData.append("name", data.name as string);
+    formData.append("price", data.price as string);
+    formData.append("quantity", data.quantity as string);
+    formData.append("brand", data.brand as string);
+    formData.append("description", data.description as string);
+    formData.append("category", data.category as string);
+    formData.append("subcategory", data.subcategory as string);
+    formData.append("images", uploadedFile as unknown as Blob);
+
     mutate(
-      {
-        newProductData: data,
-      },
+      formData,
       {
         onSuccess: () => {
           toast.success("Product Added Successfully! 😍");
@@ -167,7 +176,13 @@ export default function AddProductForm() {
             )}
           />
         </FormControl>
-        <input type="file" />
+        <input
+          type="file"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            setUploadedFile(file ? file : null);
+          }}
+        />
         <Button
           type="submit"
           sx={{
