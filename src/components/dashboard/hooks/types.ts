@@ -1,4 +1,5 @@
 export interface IProduct {
+  _id?: string;
   name: string;
   price: any; //!fix the type
   quantity: any; //!fix the type

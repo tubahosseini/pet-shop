@@ -25,17 +25,26 @@ export const removeProductById = async (id: string): Promise<any> => {
   }
 };
 
-export const addNewProduct = async (newProductData: IProduct) => {
+export const addNewProduct = async (newProductData: any) => {
   try {
-    const userResponse = await api.post(`/products`, newProductData, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return {
-      product: userResponse.data,
-    };
+    const userResponse = await api.post(`/products`, newProductData);
+    return userResponse;
   } catch (error) {
     throw error;
   }
+};
+
+export const editProductById = async (editedProductData: IProduct) => {
+  const { _id, ...rest } = editedProductData;
+  try {
+    const userResponse = await api.patch(`/products/${_id}`, rest);
+    return userResponse;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const editProductsById = async (editedProductsData: IProduct[]) => {
+  const promiseAll = editedProductsData.map((item) => editProductById(item));
+  const editedProducts = await Promise.all(promiseAll);
 };

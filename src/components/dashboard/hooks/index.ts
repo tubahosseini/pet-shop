@@ -1,10 +1,10 @@
 import {
   addNewProduct,
+  editProductsById,
   getAllOrders,
   removeProductById,
 } from "@/components/dashboard/services";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { IProduct } from "./types";
 
 export const useGetAllOrders = () => {
   return useQuery({
@@ -24,7 +24,19 @@ export const useRemoveProductById = () => {
 
 export const useAddNewProduct = () => {
   return useMutation({
-    mutationFn: (data: { newProductData: IProduct }) =>
-      addNewProduct(data.newProductData),
+    mutationKey: ["addNewProduct"],
+    mutationFn: addNewProduct,
+  });
+};
+
+export const useEditProductById = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["editProductById"],
+    mutationFn: editProductsById,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["allProducts"] });
+    },
   });
 };
