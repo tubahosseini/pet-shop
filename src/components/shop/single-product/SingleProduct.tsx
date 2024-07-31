@@ -2,6 +2,8 @@ import { useGetProductById } from "@/hooks";
 import { Box, Button, Container, Divider, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
+import parse from 'html-react-parser';
+
 
 export default function SingleProduct({ id }: any) {
   if (!id || Array.isArray(id)) {
@@ -77,7 +79,7 @@ export default function SingleProduct({ id }: any) {
         </Box>
       </Box>
       <Box sx={{ border: "2px solid #f1ae4b", borderRadius: 2, mt: 3, p: 2 }}>
-        {product.description}
+      {parse(product.description)}
       </Box>
     </Container>
   );
