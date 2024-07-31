@@ -280,6 +280,7 @@ export default function Header() {
         position: "fixed",
         top: 0,
         zIndex: 2,
+        boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
       }}
     >
       <Box
