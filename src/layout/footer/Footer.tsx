@@ -1,7 +1,8 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import React from "react";
 import { Pets, Facebook, Instagram, Twitter } from "@mui/icons-material";
 import { footerStyles } from "./footer.styles";
+import { routes } from "@/constants/routes";
 
 export default function Footer() {
   return (
@@ -14,9 +15,15 @@ export default function Footer() {
         </Typography>
       </Box>
       <Box sx={footerStyles.linksBox}>
-        <Typography>Shop</Typography>
-        <Typography>Our Story</Typography>
-        <Typography>Contact Us</Typography>
+        <Link href={routes.shop} sx={footerStyles.links}>
+          Shop
+        </Link>
+        <Link href={routes.aboutUs} sx={footerStyles.links}>
+          Our Story
+        </Link>
+        <Link href={routes.contactUs} sx={footerStyles.links}>
+          Contact Us
+        </Link>
       </Box>
       <Box sx={footerStyles.addressBox}>
         <Typography marginBottom={1}>How to reach us?</Typography>
