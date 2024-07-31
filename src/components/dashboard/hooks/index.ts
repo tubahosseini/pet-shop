@@ -1,4 +1,6 @@
 import {
+  addNewProduct,
+  editProductsById,
   getAllOrders,
   removeProductById,
 } from "@/components/dashboard/services";
@@ -17,5 +19,24 @@ export const useRemoveProductById = () => {
   return useMutation({
     mutationKey: ["removeProductById"],
     mutationFn: removeProductById,
+  });
+};
+
+export const useAddNewProduct = () => {
+  return useMutation({
+    mutationKey: ["addNewProduct"],
+    mutationFn: addNewProduct,
+  });
+};
+
+export const useEditProductById = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["editProductById"],
+    mutationFn: editProductsById,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["allProducts"] });
+    },
   });
 };

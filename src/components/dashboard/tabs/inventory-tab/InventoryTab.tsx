@@ -8,9 +8,10 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import { Delete, Edit } from "@mui/icons-material";
 import { useState } from "react";
 import Image from "next/image";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import { useEditProductById } from "../../hooks";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -47,7 +48,17 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
 }
 
 export default function InventoryTab(data: any) {
-  // console.log(data.data.data.products);
+  const [isPriceClicked, setIsPriceClicked] = useState<string | null>(null);
+  const [isQuantityClicked, setIsQuantityClicked] = useState<any>(null);
+  const [editedValues, setEditedValues] = useState<any>([]);
+  const { mutate: editInventory } = useEditProductById();
+
+  function saveChanges() {
+    console.log(editedValues);
+    editInventory(editedValues);
+    setEditedValues([]);
+  }
+
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] =
     useState<keyof (typeof data.data.products)[0]>("name");
@@ -71,79 +82,156 @@ export default function InventoryTab(data: any) {
     getComparator(order, orderBy)
   );
 
+  function editPrice(e: any, product: any) {
+    const editedPrice = +e.target.value;
+    const foundedId = editedValues.findIndex(
+      (item: any) => item._id === product._id
+    );
+    if (foundedId > -1) {
+      editedValues[foundedId].price = editedPrice;
+    } else {
+      setEditedValues([
+        ...editedValues,
+        { _id: product._id, price: editedPrice },
+      ]);
+    }
+  }
+
+  function editQuantity(e: any, product: any) {
+    const editedQuantity = +e.target.value;
+    const foundedId = editedValues.findIndex(
+      (item: any) => item._id === product._id
+    );
+    if (foundedId > -1) {
+      editedValues[foundedId].quantity = editedQuantity;
+    } else {
+      setEditedValues([
+        ...editedValues,
+        { _id: product._id, quantity: editedQuantity },
+      ]);
+    }
+  }
+
   return (
-    <TableContainer
-      component={Paper}
-      sx={{ my: "auto", mx: { xs: 6, md: 15 } }}
-    >
-      <Table aria-label="simple table">
-        <TableHead sx={{ bgcolor: "primary.main" }}>
-          <TableRow>
-            <TableCell sx={{ color: "primary.light" }}>
-              <TableSortLabel
-                active={orderBy === "image"}
-                direction={orderBy === "image" ? order : "asc"}
-                onClick={(event) => handleRequestSort(event, "image")}
-              >
-                Image
-              </TableSortLabel>
-            </TableCell>
-            <TableCell sx={{ color: "primary.light" }}>
-              <TableSortLabel
-                active={orderBy === "name"}
-                direction={orderBy === "name" ? order : "asc"}
-                onClick={(event) => handleRequestSort(event, "name")}
-              >
-                Name
-              </TableSortLabel>
-            </TableCell>
-            <TableCell sx={{ color: "primary.light" }}>
-              <TableSortLabel
-                active={orderBy === "subCategory"}
-                direction={orderBy === "subCategory" ? order : "asc"}
-                onClick={(event) => handleRequestSort(event, "subCategory")}
-              >
-                Price
-              </TableSortLabel>
-            </TableCell>
-            <TableCell sx={{ color: "primary.light" }}>
-              <TableSortLabel
-                active={orderBy === "brand"}
-                direction={orderBy === "brand" ? order : "asc"}
-                onClick={(event) => handleRequestSort(event, "brand")}
-              >
-                Quantity
-              </TableSortLabel>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {sortedRows?.slice(page * 5, page * 5 + 5).map((product: any) => (
-            <TableRow key={product.id}>
-              <TableCell component="th" scope="row">
-                <Image
-                  width={80}
-                  height={80}
-                  alt={product.name}
-                  src={`http://${product.images}`}
-                />
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <TableContainer
+        component={Paper}
+        sx={{ my: "auto", mx: { xs: 6, md: 15 }, display: "block" }}
+      >
+        <Table aria-label="simple table">
+          <TableHead sx={{ bgcolor: "primary.main" }}>
+            <TableRow>
+              <TableCell sx={{ color: "primary.light" }}>
+                <TableSortLabel
+                  active={orderBy === "image"}
+                  direction={orderBy === "image" ? order : "asc"}
+                  onClick={(event) => handleRequestSort(event, "image")}
+                >
+                  Image
+                </TableSortLabel>
               </TableCell>
-              <TableCell>{product.name}</TableCell>
-              <TableCell>{`€ ${product.price}`}</TableCell>
-              <TableCell>{product.quantity}</TableCell>
+              <TableCell sx={{ color: "primary.light" }}>
+                <TableSortLabel
+                  active={orderBy === "name"}
+                  direction={orderBy === "name" ? order : "asc"}
+                  onClick={(event) => handleRequestSort(event, "name")}
+                >
+                  Name
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sx={{ color: "primary.light" }}>
+                <TableSortLabel
+                  active={orderBy === "subCategory"}
+                  direction={orderBy === "subCategory" ? order : "asc"}
+                  onClick={(event) => handleRequestSort(event, "subCategory")}
+                >
+                  Price
+                </TableSortLabel>
+              </TableCell>
+              <TableCell sx={{ color: "primary.light" }}>
+                <TableSortLabel
+                  active={orderBy === "brand"}
+                  direction={orderBy === "brand" ? order : "asc"}
+                  onClick={(event) => handleRequestSort(event, "brand")}
+                >
+                  Quantity
+                </TableSortLabel>
+              </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <TablePagination
-        rowsPerPageOptions={[]}
-        component="div"
-        count={data.data.data.products.length}
-        rowsPerPage={5}
-        page={page}
-        onPageChange={handleChangePage}
-        sx={{ bgcolor: "primary.main", color: "white" }}
-      />
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {sortedRows?.slice(page * 5, page * 5 + 5).map((product: any) => (
+              <TableRow key={product._id}>
+                <TableCell component="th" scope="row">
+                  <Image
+                    width={80}
+                    height={80}
+                    alt={product.name}
+                    src={`http://${product.images}`}
+                  />
+                </TableCell>
+                <TableCell>{product.name}</TableCell>
+                <TableCell>
+                  {isPriceClicked === product._id ? (
+                    <TextField
+                      sx={{ width: 70 }}
+                      autoFocus
+                      onBlur={() => setIsPriceClicked(null)}
+                      onChange={(e) => editPrice(e, product)}
+                      defaultValue={product.price}
+                    />
+                  ) : (
+                    <Typography
+                      id={product._id}
+                      onClick={() => setIsPriceClicked(product._id)}
+                    >
+                      {editedValues?.find(
+                        (item: any) => item._id === product._id
+                      )?.price || product.price}
+                    </Typography>
+                  )}
+                </TableCell>
+                <TableCell>
+                  {isQuantityClicked === product._id ? (
+                    <TextField
+                      sx={{ width: 70 }}
+                      autoFocus
+                      onBlur={() => setIsQuantityClicked(null)}
+                      onChange={(e) => editQuantity(e, product)}
+                      defaultValue={product.quantity}
+                    />
+                  ) : (
+                    <Typography
+                      id={product._id}
+                      onClick={() => setIsQuantityClicked(product._id)}
+                    >
+                      {editedValues?.find(
+                        (item: any) => item._id === product._id
+                      )?.quantity || product.quantity}
+                    </Typography>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          rowsPerPageOptions={[]}
+          component="div"
+          count={data.data.data.products.length}
+          rowsPerPage={5}
+          page={page}
+          onPageChange={handleChangePage}
+          sx={{ bgcolor: "primary.main", color: "white" }}
+        />
+      </TableContainer>
+      <Button
+        sx={{ bgcolor: "primary.dark", width: "30%" }}
+        disabled={editedValues.length > 0 ? false : true}
+        onClick={saveChanges}
+      >
+        Save Changes
+      </Button>
+    </Box>
   );
 }
