@@ -50,6 +50,14 @@ export default function AddProductForm() {
     mutate(formData, {
       onSuccess: () => {
         toast.success("Product Added Successfully! 😍");
+        setValue("name", "");
+        setValue("price", "");
+        setValue("quantity", "");
+        setValue("brand", "");
+        setValue("description", "");
+        setValue("category", ""); //! does not get empty😑
+        setValue("subcategory", "");
+        setUploadedFile(null); //! does not get empty😑
       },
       onError: (error) => {
         toast.error("Failed!");
