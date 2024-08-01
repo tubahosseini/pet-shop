@@ -23,3 +23,15 @@ export async function getProductById(id: any): Promise<any> {
     throw error;
   }
 }
+
+export const getAllCategories = async (): Promise<any> => {
+  try {
+    const response = await api.get(`/categories`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error(error.response.data);
+    }
+    throw error;
+  }
+};
