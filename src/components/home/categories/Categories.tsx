@@ -12,9 +12,9 @@ import CategoryCard from "../category-card/CategoryCard";
 const categories = [
   { title: "DOGS", image: dogCategory, bgcolor: "primary.main" },
   { title: "CATS", image: catCategory, bgcolor: "primary.dark" },
-  { title: "GIRAFFE", image: giraffeCategory, bgcolor: "primary.main" },
+  { title: "GIRAFFES", image: giraffeCategory, bgcolor: "primary.main" },
   { title: "BIRDS", image: birdCategory, bgcolor: "primary.dark" },
-  { title: "REPTILE", image: frogCategory, bgcolor: "primary.main" },
+  { title: "REPTILES", image: frogCategory, bgcolor: "primary.main" },
   { title: "RABBITS", image: rabbitCategory, bgcolor: "primary.dark" },
 ];
 
