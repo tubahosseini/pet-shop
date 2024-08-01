@@ -17,6 +17,7 @@ import dynamic from "next/dynamic";
 // Dynamically import ReactQuill to ensure that Quill is only loaded on the client side to prevent error!
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
+import Image from "next/image";
 
 interface AddProductFormInputs {
   name: string;
@@ -50,6 +51,14 @@ export default function AddProductForm() {
     mutate(formData, {
       onSuccess: () => {
         toast.success("Product Added Successfully! 😍");
+        setValue("name", "");
+        setValue("price", "");
+        setValue("quantity", "");
+        setValue("brand", "");
+        setValue("description", "");
+        setValue("category", ""); //! does not get empty😑
+        setValue("subcategory", "");
+        setUploadedFile(null); //! does not get empty😑
       },
       onError: (error) => {
         toast.error("Failed!");
@@ -172,33 +181,51 @@ export default function AddProductForm() {
           render={({ field }) => (
             <ReactQuill
               {...field}
-              value={field.value || ""} // Ensure value is controlled
-              onChange={(value) => setValue("description", value)} // Update the form value
-              placeholder="Write description..."
+              value={field.value || ""}
+              onChange={(value) => setValue("description", value)}
+              placeholder="description..."
             />
           )}
         />
-        <input
-          type="file"
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            setUploadedFile(file ? file : null);
-          }}
-        />
-        <Button
-          type="submit"
+        <Box
           sx={{
-            bgcolor: "primary.main",
-            py: 0.7,
-            px: 4,
-            borderRadius: 3,
-            color: "primary.light",
-            mt: 3,
-            "&:hover": { bgcolor: "primary.main" },
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          Add
-        </Button>
+          <input
+            type="file"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              setUploadedFile(file ? file : null);
+            }}
+          />
+          {uploadedFile && (
+            <Box sx={{ display: "flex", alignItems: "center", marginTop: 2 }}>
+              <Image
+                src={URL.createObjectURL(uploadedFile)} //a method to create a temporary URL for a file to access the contents of the file within the browser.
+                alt="uploaded picture of the product"
+                width={100}
+                height={100}
+              />
+            </Box>
+          )}
+          <Button
+            type="submit"
+            sx={{
+              bgcolor: "primary.main",
+              py: 0.7,
+              px: 4,
+              borderRadius: 3,
+              color: "primary.light",
+              mt: 3,
+              "&:hover": { bgcolor: "primary.main" },
+            }}
+          >
+            Add
+          </Button>
+        </Box>
       </Box>
     </form>
   );
