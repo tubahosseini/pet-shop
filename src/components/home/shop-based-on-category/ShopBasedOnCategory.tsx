@@ -1,6 +1,16 @@
 import ProductCard from "@/components/shared/ProductCard";
+import { routes } from "@/constants/routes";
 import { useGetAllProducts } from "@/hooks";
-import { Box, Button, Container, Grid } from "@mui/material";
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Link,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 
 const productsPerPage = 10;
@@ -39,7 +49,7 @@ export default function ShopBasedOnCategory({ category }: { category: any }) {
   };
 
   return (
-    <Container sx={{ my: 3, pb: 2, pt: 12 }}>
+    <Container sx={{ my: 1, pb: 2, pt: 12 }}>
       <Grid container spacing={3}>
         <Grid
           item
@@ -50,6 +60,17 @@ export default function ShopBasedOnCategory({ category }: { category: any }) {
           bla bla bla
         </Grid>
         <Grid item xs={12} md={10}>
+          <Breadcrumbs separator="›" aria-label="breadcrumb" sx={{ my: 3 }}>
+            <Link
+              color="inherit"
+              href={routes.home}
+              sx={{ textDecoration: "none" }}
+            >
+              Home
+            </Link>
+            <Typography color="textPrimary">{category}</Typography>
+          </Breadcrumbs>
+          <Divider sx={{ mb: 3, mt: 1 }} />
           <Grid container spacing={2}>
             {currentProducts.map((product: any) => (
               <Grid item xs={6} sm={4} md={3} key={product._id}>

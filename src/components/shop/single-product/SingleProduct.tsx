@@ -1,8 +1,9 @@
 import { useGetProductById } from "@/hooks";
-import { Box, Button, Container, Divider, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Button, Container, Divider, Link, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import parse from "html-react-parser";
+import { routes } from "@/constants/routes";
 
 export default function SingleProduct({ id }: any) {
   if (!id || Array.isArray(id)) {
@@ -19,6 +20,24 @@ export default function SingleProduct({ id }: any) {
   const isOutOfStock = product.quantity === 0;
   return (
     <Container sx={{ pb: 3, pt: 13 }}>
+      <Breadcrumbs separator="›" aria-label="breadcrumb" sx={{ my: 3 }}>
+        <Link
+          color="inherit"
+          href={routes.home}
+          sx={{ textDecoration: "none" }}
+        >
+          Home
+        </Link>
+        <Link
+          color="inherit"
+          href={routes.shop}
+          sx={{ textDecoration: "none" }}
+        >
+          Shop
+        </Link>
+        <Typography color="textPrimary">{product.name}</Typography>
+      </Breadcrumbs>
+      <Divider sx={{ my: 3 }} />
       <Typography sx={{ fontSize: 30, mb: 3, maxWidth: 550 }}>
         {product.name}
       </Typography>
@@ -58,7 +77,9 @@ export default function SingleProduct({ id }: any) {
           >
             <Box>
               <Typography sx={{ fontSize: 20 }}>Quantity</Typography>
-              <Box sx={{display:'flex', gap:3, alignItems:'center',mt:2}}>
+              <Box
+                sx={{ display: "flex", gap: 3, alignItems: "center", mt: 2 }}
+              >
                 <Button
                   sx={{
                     width: 15,
