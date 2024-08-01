@@ -8,6 +8,7 @@ import { ReactElement, ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { AppProps } from "next/app";
 import { ToastContainer } from "react-toastify";
+import Head from "next/head";
 
 export type NextPageWithLayout<P = {}> = NextPage<P> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -34,6 +35,10 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       <QueryClientProvider client={queryClient}>
         {getLayout(
           <>
+            <Head>
+              <title>Pawfect</title>
+              <link rel="icon" href="/logo.svg" />
+            </Head>
             <ToastContainer />
             <Component {...pageProps} />
           </>

@@ -41,4 +41,8 @@ export const footerStyles = {
     justifyContent: "center",
     gap: 1,
   },
+  links: {
+    textDecoration: "none",
+    color: "primary.light",
+  },
 };
