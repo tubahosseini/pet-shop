@@ -14,7 +14,9 @@ export default function CategoryCard({
   bgcolor: string;
 }) {
   return (
-    <Link href={`${routes.home}/${title.toLowerCase()}`}>
+    <Link
+      href={`http://localhost:3000/shop?category=${title.toLowerCase()}&subcategory=`}
+    >
       <Box
         sx={{
           bgcolor: bgcolor,
