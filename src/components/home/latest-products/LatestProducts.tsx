@@ -4,15 +4,7 @@ import React from "react";
 
 export default function LatestProducts() {
   const { data } = useGetAllProducts();
-
-  const latestProducts = data?.data.products
-    .filter((product: any) => product.category && product.category.createdAt)
-    .sort((a: any, b: any) => {
-      const dateA = new Date(a.category.createdAt);
-      const dateB = new Date(b.category.createdAt);
-      return dateB.getTime() - dateA.getTime();
-    })
-    .slice(0, 10);
+  const latestProducts = data?.data.products.slice(-10).reverse(); // Get the last 10 products
 
   return (
     <>
