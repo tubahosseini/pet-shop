@@ -1,13 +1,13 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
 import WeeklySalesChart from "./WeeklySalesChart";
+import CategoryPieChart from "./CategoryPieChart";
 
 export default function DashboardTab() {
   return (
     <Box
       sx={{
         width: "100%",
-        // bgcolor: "pink",
         height: { xs: "100vh", md: "90vh" },
         my: "auto",
         mx: 6,
@@ -21,7 +21,7 @@ export default function DashboardTab() {
           <WeeklySalesChart />
         </Grid>
         <Grid item xs={12} md={5}>
-          recent orders
+          <CategoryPieChart />
         </Grid>
         <Grid item xs={12} md={7}>
           new Costumers
