@@ -2,6 +2,7 @@ import { Box, Grid } from "@mui/material";
 import React from "react";
 import WeeklySalesChart from "./charts/WeeklySalesChart";
 import CategoryPieChart from "./charts/CategoryPieChart";
+import SaleStatus from "./charts/SaleStatus";
 
 export default function DashboardTab() {
   return (
@@ -15,7 +16,7 @@ export default function DashboardTab() {
     >
       <Grid container>
         <Grid item xs={12} md={7}>
-          number of sales/ total earning
+          <SaleStatus />
         </Grid>
         <Grid item xs={12} md={5}>
           <WeeklySalesChart />
