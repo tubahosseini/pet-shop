@@ -33,6 +33,7 @@ import {
 import { useRouter } from "next/router";
 import { routes } from "@/constants/routes";
 import { getCookie, setCookie } from "cookies-next";
+import CartDrawer from "./CartDrawer";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -82,7 +83,6 @@ export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
-
 
   const theme = useTheme();
   const router = useRouter();
@@ -253,19 +253,6 @@ export default function Header() {
     </Box>
   );
 
-  const cartDrawerList = (
-    <Box sx={{ width: 300 }} role="presentation">
-      <List>
-        <ListItem>
-          <ListItemText primary="Item 1" secondary="Description of item 1" />
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="Item 2" secondary="Description of item 2" />
-        </ListItem>
-      </List>
-    </Box>
-  );
-
   return (
     <Box
       sx={{
@@ -384,7 +371,7 @@ export default function Header() {
         onClose={toggleCartDrawer(false)}
         onOpen={toggleCartDrawer(true)}
       >
-        {cartDrawerList}
+        <CartDrawer />
       </SwipeableDrawer>
     </Box>
   );
