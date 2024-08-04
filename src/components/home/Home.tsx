@@ -116,26 +116,7 @@ export default function Home() {
         >
           LATEST PRODUCTS
         </Typography>
-        <Box
-          sx={{
-            width: "100%",
-            mb: 6,
-            p: 2,
-            display: "flex",
-            gap: 2,
-            overflowX: "auto",
-            whiteSpace: "nowrap",
-            "&::-webkit-scrollbar": {
-              height: "8px",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "rgba(0,0,0,0.3)",
-              borderRadius: "4px",
-            },
-          }}
-        >
-          <LatestProducts />
-        </Box>
+        <LatestProducts />
         <BusinessStats />
         <Typography
           sx={{

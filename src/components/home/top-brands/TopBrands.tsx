@@ -6,7 +6,9 @@ import scrumbles from "@/assets/images/home/brand-card/scrumbles.jpg";
 import dollyParton from "@/assets/images/home/brand-card/dolly-parton.jpg";
 import lilysKitchen from "@/assets/images/home/brand-card/lilys-kitchen.png";
 import petsAtHome from "@/assets/images/home/brand-card/pets-at-home.png";
-import { Box } from "@mui/material";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const brands = [
   { src: ardenGrane, alt: "Arden Grane logo" },
@@ -18,28 +20,45 @@ const brands = [
 ];
 
 export default function TopBrands() {
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 6,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    responsive: [
+      {
+        breakpoint: 1445,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 1023,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
+
   return (
-    <Box
-      sx={{
-        width: "100%",
-        mb: 3,
-        p: 2,
-        display: "flex",
-        gap: 2,
-        overflowX: "auto",
-        whiteSpace: "nowrap",
-        "&::-webkit-scrollbar": {
-          height: "8px",
-        },
-        "&::-webkit-scrollbar-thumb": {
-          backgroundColor: "rgba(0,0,0,0.3)",
-          borderRadius: "4px",
-        },
-      }}
-    >
+    <Slider {...settings}>
       {brands.map((brand, index) => (
         <BrandCard key={index} src={brand.src} alt={brand.alt} />
       ))}
-    </Box>
+    </Slider>
   );
 }
