@@ -1,7 +1,7 @@
 import { Box, Grid } from "@mui/material";
 import React from "react";
-import WeeklySalesChart from "./WeeklySalesChart";
-import CategoryPieChart from "./CategoryPieChart";
+import WeeklySalesChart from "./charts/WeeklySalesChart";
+import CategoryPieChart from "./charts/CategoryPieChart";
 
 export default function DashboardTab() {
   return (
