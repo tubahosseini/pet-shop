@@ -83,7 +83,16 @@ const CategoryPieChart: React.FC = () => {
   };
 
   return (
-    <Box sx={{ width: 300, height: 300 }}>
+    <Box
+      sx={{
+        width: 400,
+        height: 380,
+        bgcolor: "#F4F1FF",
+        px: 4,
+        py: 3,
+        borderRadius: 5,
+      }}
+    >
       <Pie data={chartData} options={options} />
     </Box>
   );

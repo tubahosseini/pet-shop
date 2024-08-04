@@ -10,6 +10,7 @@ import {
   Legend,
 } from "chart.js";
 import { useGetAllOrders } from "@/components/dashboard/hooks";
+import { Box } from "@mui/material";
 
 ChartJS.register(
   CategoryScale,
@@ -67,8 +68,8 @@ const WeeklySalesChart: React.FC = () => {
       {
         label: "Number of Orders",
         data: weeklyOrders,
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: "#36a2eb47",
+        borderColor: "#36a2eb",
         borderWidth: 1,
       },
     ],
@@ -87,7 +88,11 @@ const WeeklySalesChart: React.FC = () => {
     },
   };
 
-  return <Bar data={chartData} options={options} />;
+  return (
+    <Box sx={{ bgcolor: "#F4F1FF", borderRadius: 5, p: 3 }}>
+      <Bar data={chartData} options={options} />
+    </Box>
+  );
 };
 
 export default WeeklySalesChart;
