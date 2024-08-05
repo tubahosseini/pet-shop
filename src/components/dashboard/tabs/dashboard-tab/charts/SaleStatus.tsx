@@ -90,17 +90,17 @@ const SaleStatus: React.FC = () => {
       sx={{
         display: "flex",
         gap: 2,
-        pr: { xs: 4, lg: 10 },
-        py: 8,
-        flexDirection: { xs: "column", sm: "row" },
+        pr: 8,
+        pb: 4,
+        flexDirection: "column",
       }}
     >
       <Box
         sx={{
           bgcolor: "#F4F1FF",
-          width: "100%",
+          width: "90%",
           color: "black",
-          py: 4,
+          py: 3,
           borderRadius: 5,
           display: "flex",
           justifyContent: "space-around",
@@ -108,17 +108,17 @@ const SaleStatus: React.FC = () => {
         }}
       >
         <Box>
-          <Typography sx={{ fontSize: 40 }}>{weeklySales}</Typography>
-          <Typography sx={{ fontSize: 20 }}>Weekly Sales</Typography>
+          <Typography sx={{ fontSize: 35 }}>{weeklySales}</Typography>
+          <Typography sx={{ fontSize: 18 }}>Weekly Sales</Typography>
         </Box>
-        <ShoppingCart sx={{ fontSize: 40, color:'primary.main' }} />
+        <ShoppingCart sx={{ fontSize: 35, color: "primary.main" }} />
       </Box>
       <Box
         sx={{
           bgcolor: "#F4F1FF",
-          width: "100%",
+          width: "90%",
           color: "black",
-          py: 4,
+          py: 3,
           borderRadius: 5,
           display: "flex",
           justifyContent: "space-around",
@@ -126,12 +126,12 @@ const SaleStatus: React.FC = () => {
         }}
       >
         <Box>
-          <Typography sx={{ fontSize: 40 }}>
+          <Typography sx={{ fontSize: 35 }}>
             {weeklyEarnings.toLocaleString()}
           </Typography>
-          <Typography sx={{ fontSize: 20 }}>Weekly Earning</Typography>
+          <Typography sx={{ fontSize: 18 }}>Weekly Earning</Typography>
         </Box>
-        <EuroSymbol sx={{ fontSize: 40, color:'primary.main'  }} />
+        <EuroSymbol sx={{ fontSize: 35, color: "primary.main" }} />
       </Box>
     </Box>
   );
