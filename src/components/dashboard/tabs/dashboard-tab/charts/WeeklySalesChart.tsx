@@ -26,35 +26,40 @@ const WeeklySalesChart: React.FC = () => {
   const [weeklyOrders, setWeeklyOrders] = useState<number[]>([
     0, 0, 0, 0, 0, 0, 0,
   ]);
+  const [dailyEarnings, setDailyEarnings] = useState<number[]>([
+    0, 0, 0, 0, 0, 0, 0,
+  ]);
   const [labels, setLabels] = useState<string[]>([]);
 
   useEffect(() => {
     if (data?.data?.orders) {
       const ordersCount: { [key: string]: number } = {};
+      const earningsCount: { [key: string]: number } = {};
 
-      // Create an array of the last 7 dates (including today)
       const dates = [];
       for (let i = 6; i >= 0; i--) {
         const date = new Date();
         date.setDate(date.getDate() - i);
-        const dateString = date.toISOString().split("T")[0]; // Format the date as YYYY-MM-DD
+        const dateString = date.toISOString().split("T")[0];
         dates.push(dateString);
-        ordersCount[dateString] = 0; // Initialize with 0
+        ordersCount[dateString] = 0;
+        earningsCount[dateString] = 0;
       }
 
-      // Count orders for each date
       data.data.orders.forEach((order: any) => {
         const orderDate = new Date(order.createdAt);
         const dateString = orderDate.toISOString().split("T")[0];
         if (ordersCount[dateString] !== undefined) {
           ordersCount[dateString]++;
+          earningsCount[dateString] += order.totalPrice; // Use totalPrice instead of totalAmount
         }
       });
 
-      // Extract counts in the correct order
       const counts = dates.map((date) => ordersCount[date]);
+      const earnings = dates.map((date) => earningsCount[date]);
 
       setWeeklyOrders(counts);
+      setDailyEarnings(earnings);
       setLabels(dates);
     }
   }, [data]);
@@ -71,6 +76,15 @@ const WeeklySalesChart: React.FC = () => {
         backgroundColor: "#36a2eb47",
         borderColor: "#36a2eb",
         borderWidth: 1,
+        yAxisID: "y",
+      },
+      {
+        label: "Earnings",
+        data: dailyEarnings,
+        backgroundColor: "#ff638447",
+        borderColor: "#ff6384",
+        borderWidth: 1,
+        yAxisID: "y1",
       },
     ],
   };
@@ -83,13 +97,46 @@ const WeeklySalesChart: React.FC = () => {
       },
       title: {
         display: true,
-        text: "Number of Orders in the Last 7 Days",
+        text: "Number of Orders and Earnings in the Last 7 Days",
+      },
+      datalabels: {
+        display: true,
+        align: "end" as const,
+        anchor: "end" as const,
+        formatter: (value: number, context: any) => {
+          if (context.dataset.label === "Earnings") {
+            return `$${value.toFixed(2)}`;
+          } else {
+            return value;
+          }
+        },
+      },
+    },
+    scales: {
+      y: {
+        type: "linear" as const,
+        position: "left" as const,
+        title: {
+          display: true,
+          text: "Number of Orders",
+        },
+      },
+      y1: {
+        type: "linear" as const,
+        position: "right" as const,
+        title: {
+          display: true,
+          text: "Earnings ($)",
+        },
+        grid: {
+          drawOnChartArea: false,
+        },
       },
     },
   };
 
   return (
-    <Box sx={{ bgcolor: "#F4F1FF", borderRadius: 5, p: 3 }}>
+    <Box sx={{ bgcolor: "#F4F1FF", borderRadius: 5, p: 2, mb:2 }}>
       <Bar data={chartData} options={options} />
     </Box>
   );
