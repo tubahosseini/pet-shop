@@ -3,6 +3,7 @@ import React from "react";
 import WeeklySalesChart from "./charts/WeeklySalesChart";
 import CategoryPieChart from "./charts/CategoryPieChart";
 import SaleStatus from "./charts/SaleStatus";
+import RecentCustomers from "./charts/RecentCustomers";
 
 export default function DashboardTab() {
   return (
@@ -15,17 +16,17 @@ export default function DashboardTab() {
       }}
     >
       <Grid container>
-        <Grid item xs={12} md={7}>
+        <Grid item xs={12} md={5}>
           <SaleStatus />
         </Grid>
-        <Grid item xs={12} md={5}>
-          <WeeklySalesChart />
+        <Grid item xs={12} md={7}>
+          <RecentCustomers />
         </Grid>
         <Grid item xs={12} md={5}>
           <CategoryPieChart />
         </Grid>
         <Grid item xs={12} md={7}>
-          new Costumers
+          <WeeklySalesChart />
         </Grid>
       </Grid>
     </Box>
