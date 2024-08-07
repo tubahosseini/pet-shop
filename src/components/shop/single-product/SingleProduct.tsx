@@ -1,4 +1,4 @@
-import { useGetProductById } from "@/hooks";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Breadcrumbs,
@@ -9,14 +9,29 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
 import parse from "html-react-parser";
 import { routes } from "@/constants/routes";
+import { useProductStore } from "@/stores/BasketStore";
+import { useGetProductById } from "@/hooks";
 
-export default function SingleProduct({ id }: any) {
+export default function SingleProduct({ id }: { id: any }) {
   const { data } = useGetProductById(id);
   const product = data?.data?.product;
   const [quantityInBasket, setQuantityInBasket] = useState(0);
+  const addProduct = useProductStore((state) => state.addProduct);
+  const increaseQuantity = useProductStore((state) => state.increaseQuantity);
+  const decreaseQuantity = useProductStore((state) => state.decreaseQuantity);
+  const deleteProduct = useProductStore((state) => state.deleteProduct);
+  const cart = useProductStore((state) => state.cart);
+
+  useEffect(() => {
+    if (product) {
+      const productInCart = cart.find((item) => item._id === product._id);
+      if (productInCart) {
+        setQuantityInBasket(productInCart.quantityInBasket);
+      }
+    }
+  }, [cart, product]);
 
   if (!id || Array.isArray(id)) {
     return <Typography>Invalid product ID</Typography>;
@@ -27,16 +42,27 @@ export default function SingleProduct({ id }: any) {
   }
 
   const isOutOfStock = product.quantity === 0;
+  const productInCart = cart.find((item) => item._id === product._id);
 
   function handleIncrease() {
     if (quantityInBasket < product.quantity) {
-      setQuantityInBasket(quantityInBasket + 1);
+      if (!productInCart) {
+        addProduct({ ...product, quantityInBasket: 1 });
+        setQuantityInBasket(1);
+      } else {
+        increaseQuantity(product._id);
+        setQuantityInBasket(quantityInBasket + 1);
+      }
     }
   }
 
   function handleDecrease() {
     if (quantityInBasket > 0) {
+      decreaseQuantity(product._id);
       setQuantityInBasket(quantityInBasket - 1);
+      if (quantityInBasket - 1 === 0) {
+        deleteProduct(product._id);
+      }
     }
   }
 
@@ -138,21 +164,6 @@ export default function SingleProduct({ id }: any) {
                 </Button>
               </Box>
             </Box>
-            <Button
-              sx={{
-                width: { xs: 150, sm: 250 },
-                bgcolor: (theme) =>
-                  isOutOfStock || quantityInBasket === 0
-                    ? theme.palette.grey[300]
-                    : theme.palette.primary.dark,
-                color: "primary.light",
-                mt: 3,
-                "&:hover": { bgcolor: "primary.dark" },
-              }}
-              disabled={isOutOfStock || quantityInBasket === 0}
-            >
-              Add To Basket
-            </Button>
           </Box>
         </Box>
       </Box>
