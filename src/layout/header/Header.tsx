@@ -93,6 +93,11 @@ export default function Header() {
     setUserRole(role);
   }, []);
 
+  function signOut() {
+    setCookie("role", "");
+    window.location.reload();
+  }
+
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -243,7 +248,7 @@ export default function Header() {
         <Divider />
         {userRole && (
           <ListItem>
-            <IconButton onClick={() => setCookie("role", "")}>
+            <IconButton onClick={signOut}>
               <Logout sx={{ color: "primary.main", mr: 1 }} />
             </IconButton>
             <ListItemText primary="Sign Out" />
@@ -335,6 +340,7 @@ export default function Header() {
             color: "primary.main",
             fontSize: 30,
             display: { xs: "none", md: "block" },
+            cursor: "pointer",
           }}
           onClick={toggleCartDrawer(true)}
         />
@@ -344,8 +350,9 @@ export default function Header() {
               color: "primary.main",
               fontSize: 30,
               display: { xs: "none", md: "block" },
+              cursor: "pointer",
             }}
-            onClick={() => setCookie("role", "")}
+            onClick={signOut}
           />
         )}
         <Menu
