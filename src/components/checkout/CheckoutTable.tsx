@@ -7,6 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Image from "next/image";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -28,47 +29,40 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
-export default function CheckoutTable() {
+export default function CheckoutTable({ cart }: { cart: any }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Image</StyledTableCell>
-            <StyledTableCell align="right">Name</StyledTableCell>
-            <StyledTableCell align="right">Quantity</StyledTableCell>
-            <StyledTableCell align="right">Single price</StyledTableCell>
-            <StyledTableCell align="right">Total price</StyledTableCell>
+            <StyledTableCell> </StyledTableCell>
+            <StyledTableCell align="center">Product</StyledTableCell>
+            <StyledTableCell align="center">Quantity</StyledTableCell>
+            <StyledTableCell align="center">Price</StyledTableCell>
+            <StyledTableCell align="center">Sum</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {cart.map((product: any) => (
+            <StyledTableRow key={product._id}>
               <StyledTableCell component="th" scope="row">
-                {row.name}
+                <Image
+                  src={`http://${product.images}`}
+                  alt="test"
+                  width={90}
+                  height={90}
+                />
               </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
+              <StyledTableCell>{product.name}</StyledTableCell>
+              <StyledTableCell align="center">
+                {product.quantityInBasket}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                €{product.price}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                €{product.price * product.quantityInBasket}
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

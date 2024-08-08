@@ -1,8 +1,11 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import React from "react";
 import CheckoutTable from "./CheckoutTable";
+import { useProductStore } from "@/stores/BasketStore";
 
 export default function Checkout() {
+  const cart = useProductStore((state) => state.cart);
+
   return (
     <Container
       sx={{
@@ -46,7 +49,14 @@ export default function Checkout() {
           variant="outlined"
           disabled
         />
-        <Typography>total price: $ 1,320</Typography>
+        <Typography variant="h5" sx={{mt:5}}>
+          Total Price: €{" "}
+          {cart.reduce(
+            (total, product) =>
+              total + product.price * product.quantityInBasket,
+            0
+          )}
+        </Typography>
         <Button
           sx={{
             bgcolor: "primary.main",
@@ -59,7 +69,7 @@ export default function Checkout() {
         </Button>
       </Box>
       <Box sx={{ width: { xs: "100%", md: "50%" } }}>
-        <CheckoutTable />
+        <CheckoutTable cart={cart}/>
       </Box>
     </Container>
   );
