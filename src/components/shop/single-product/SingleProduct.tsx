@@ -1,37 +1,20 @@
-import React, { useState, useEffect } from "react";
+import QuantityControl from "@/components/shared/QuantityControl";
+import { routes } from "@/constants/routes";
+import { useGetProductById } from "@/hooks";
 import {
   Box,
   Breadcrumbs,
-  Button,
   Container,
   Divider,
   Link,
   Typography,
 } from "@mui/material";
-import Image from "next/image";
 import parse from "html-react-parser";
-import { routes } from "@/constants/routes";
-import { useProductStore } from "@/stores/BasketStore";
-import { useGetProductById } from "@/hooks";
+import Image from "next/image";
 
 export default function SingleProduct({ id }: { id: any }) {
   const { data } = useGetProductById(id);
   const product = data?.data?.product;
-  const [quantityInBasket, setQuantityInBasket] = useState(0);
-  const addProduct = useProductStore((state) => state.addProduct);
-  const increaseQuantity = useProductStore((state) => state.increaseQuantity);
-  const decreaseQuantity = useProductStore((state) => state.decreaseQuantity);
-  const deleteProduct = useProductStore((state) => state.deleteProduct);
-  const cart = useProductStore((state) => state.cart);
-
-  useEffect(() => {
-    if (product) {
-      const productInCart = cart.find((item) => item._id === product._id);
-      if (productInCart) {
-        setQuantityInBasket(productInCart.quantityInBasket);
-      }
-    }
-  }, [cart, product]);
 
   if (!id || Array.isArray(id)) {
     return <Typography>Invalid product ID</Typography>;
@@ -42,29 +25,6 @@ export default function SingleProduct({ id }: { id: any }) {
   }
 
   const isOutOfStock = product.quantity === 0;
-  const productInCart = cart.find((item) => item._id === product._id);
-
-  function handleIncrease() {
-    if (quantityInBasket < product.quantity) {
-      if (!productInCart) {
-        addProduct({ ...product, quantityInBasket: 1 });
-        setQuantityInBasket(1);
-      } else {
-        increaseQuantity(product._id);
-        setQuantityInBasket(quantityInBasket + 1);
-      }
-    }
-  }
-
-  function handleDecrease() {
-    if (quantityInBasket > 0) {
-      decreaseQuantity(product._id);
-      setQuantityInBasket(quantityInBasket - 1);
-      if (quantityInBasket - 1 === 0) {
-        deleteProduct(product._id);
-      }
-    }
-  }
 
   return (
     <Container sx={{ pb: 3, pt: 13 }}>
@@ -132,37 +92,7 @@ export default function SingleProduct({ id }: { id: any }) {
           >
             <Box>
               <Typography sx={{ fontSize: 20 }}>Quantity</Typography>
-              <Box
-                sx={{ display: "flex", gap: 3, alignItems: "center", mt: 2 }}
-              >
-                <Button
-                  sx={{
-                    width: 15,
-                    border: "2px solid #f1ae4b",
-                    color: "black",
-                  }}
-                  disabled={isOutOfStock || quantityInBasket === 0}
-                  onClick={handleDecrease}
-                >
-                  -
-                </Button>
-                <Typography sx={{ cursor: "pointer" }}>
-                  {quantityInBasket}
-                </Typography>
-                <Button
-                  sx={{
-                    width: 15,
-                    border: "2px solid #f1ae4b",
-                    color: "black",
-                  }}
-                  disabled={
-                    isOutOfStock || quantityInBasket === product.quantity
-                  }
-                  onClick={handleIncrease}
-                >
-                  +
-                </Button>
-              </Box>
+              <QuantityControl product={product} />
             </Box>
           </Box>
         </Box>
