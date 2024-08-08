@@ -1,9 +1,48 @@
 import { Box, Button } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import creditCard from "@/assets/images/payment/creditCard.svg";
 import Image from "next/image";
+import { useAddNewOrder } from "./hooks";
+import { useProductStore } from "@/stores/BasketStore";
 
 export default function Payment() {
+  const { mutate } = useAddNewOrder();
+  const cart = useProductStore((state) => state.cart);
+  const clearCart = useProductStore((state) => state.clearCart);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const userString = localStorage.getItem("user");
+    if (userString) {
+      setUser(JSON.parse(userString));
+    }
+  }, []);
+
+  const handleOkClick = () => {
+    if (!user) {
+      console.error("user not found");
+      return;
+    }
+
+    const order = {
+      user: user._id,
+      products: cart.map((item) => ({
+        product: item._id,
+        count: item.quantityInBasket,
+      })),
+      deliveryStatus: false,
+    };
+
+    mutate(order, {
+      onSuccess: () => {
+        clearCart();
+      },
+      onError: (error) => {
+        console.error("order failed", error);
+      },
+    });
+  };
+
   return (
     <Box
       sx={{
@@ -22,6 +61,7 @@ export default function Payment() {
             bgcolor: "green",
             "&:hover": { color: "white", bgcolor: "green" },
           }}
+          onClick={handleOkClick}
         >
           ok
         </Button>
