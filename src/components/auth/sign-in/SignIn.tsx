@@ -27,6 +27,7 @@ const SignIn: React.FC = () => {
     mutate(formData, {
       onSuccess: (response) => {
         setCookie("role", response.data.user.role);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         router.push(routes.home);
         toast.success(`Welcome back ${response.data.user.username}`);
       },
