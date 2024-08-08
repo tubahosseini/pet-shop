@@ -9,4 +9,6 @@ export const routes = {
   aboutUs: "/about-us",
   shop: "/shop",
   userProfile: "/user-profile",
+  payment: "/payment",
+  result: "/result",
 };
