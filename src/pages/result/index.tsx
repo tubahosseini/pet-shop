@@ -1,5 +1,6 @@
+import Result from "@/components/result/Result";
 import React from "react";
 
 export default function ResultPage() {
-  return <div>ResultPage</div>;
+  return <Result />;
 }

@@ -1,9 +1,10 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Link } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import creditCard from "@/assets/images/payment/creditCard.svg";
 import Image from "next/image";
 import { useAddNewOrder } from "./hooks";
 import { useProductStore } from "@/stores/BasketStore";
+import { routes } from "@/constants/routes";
 
 export default function Payment() {
   const { mutate } = useAddNewOrder();
@@ -55,25 +56,30 @@ export default function Payment() {
     >
       <Image src={creditCard} alt="an image of a credit card" />
       <Box sx={{ display: "flex", gap: 3 }}>
-        <Button
-          sx={{
-            color: "white",
-            bgcolor: "green",
-            "&:hover": { color: "white", bgcolor: "green" },
-          }}
-          onClick={handleOkClick}
-        >
-          ok
-        </Button>
-        <Button
-          sx={{
-            color: "white",
-            bgcolor: "red",
-            "&:hover": { color: "white", bgcolor: "red" },
-          }}
-        >
-          cancel
-        </Button>
+        <Link href={routes.successfulPayment}>
+          <Button
+            sx={{
+              color: "white",
+              bgcolor: "green",
+              "&:hover": { color: "white", bgcolor: "green" },
+            }}
+            onClick={handleOkClick}
+          >
+            ok
+          </Button>
+        </Link>
+
+        <Link href={routes.failedPayment}>
+          <Button
+            sx={{
+              color: "white",
+              bgcolor: "red",
+              "&:hover": { color: "white", bgcolor: "red" },
+            }}
+          >
+            cancel
+          </Button>
+        </Link>
       </Box>
     </Box>
   );

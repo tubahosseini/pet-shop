@@ -11,4 +11,6 @@ export const routes = {
   userProfile: "/user-profile",
   payment: "/payment",
   result: "/result",
+  failedPayment: "/result?status=fail",
+  successfulPayment: "/result?status=success",
 };
