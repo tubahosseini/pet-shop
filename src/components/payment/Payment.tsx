@@ -11,11 +11,17 @@ export default function Payment() {
   const cart = useProductStore((state) => state.cart);
   const clearCart = useProductStore((state) => state.clearCart);
   const [user, setUser] = useState<any>(null);
+  const [deliveryDate, setDeliveryDate] = useState<string | null>(null);
 
   useEffect(() => {
     const userString = localStorage.getItem("user");
     if (userString) {
       setUser(JSON.parse(userString));
+    }
+
+    const storedDate = localStorage.getItem("deliveryDate");
+    if (storedDate) {
+      setDeliveryDate(storedDate);
     }
   }, []);
 
@@ -32,11 +38,13 @@ export default function Payment() {
         count: item.quantityInBasket,
       })),
       deliveryStatus: false,
+      deliveryDate: deliveryDate,
     };
 
     mutate(order, {
       onSuccess: () => {
         clearCart();
+        localStorage.removeItem("deliveryDate");
       },
       onError: (error) => {
         console.error("order failed", error);

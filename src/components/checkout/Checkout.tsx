@@ -1,8 +1,17 @@
-import { Box, Button, Container, Link, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CheckoutTable from "./CheckoutTable";
 import { useProductStore } from "@/stores/BasketStore";
 import { routes } from "@/constants/routes";
+import DatePicker, { DateObject } from "react-multi-date-picker";
+import dayjs from "dayjs";
 
 export default function Checkout() {
   const cart = useProductStore((state) => state.cart);
@@ -13,6 +22,8 @@ export default function Checkout() {
     phoneNumber: "",
     address: "",
   });
+
+  const [deliveryDate, setDeliveryDate] = useState(new Date());
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -26,6 +37,18 @@ export default function Checkout() {
       });
     }
   }, []);
+
+  const handleDateChange = (date: DateObject) => {
+    if (date) {
+      const selectedDate = date.toDate();
+      setDeliveryDate(selectedDate);
+      localStorage.setItem("deliveryDate", selectedDate.toISOString());
+    } else {
+      const currentDate = new Date();
+      setDeliveryDate(currentDate);
+      localStorage.setItem("deliveryDate", currentDate.toISOString());
+    }
+  };
 
   return (
     <Container
@@ -73,6 +96,16 @@ export default function Checkout() {
           variant="outlined"
           value={userData.address}
           disabled
+        />
+        {/* date picker */}
+        <Typography>Choose the deliver Date: </Typography>
+        <DatePicker
+          value={deliveryDate}
+          onChange={handleDateChange}
+          minDate={new Date()}
+          maxDate={dayjs().add(3, "day").toDate()}
+          format="YYYY-MM-DD"
+          placeholder="Select Delivery Date"
         />
         <Typography variant="h5" sx={{ mt: 5 }}>
           Total Price: €{" "}
