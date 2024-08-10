@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useAddNewOrder } from "./hooks";
 import { useProductStore } from "@/stores/BasketStore";
 import { routes } from "@/constants/routes";
+import { useEditProductById } from "../dashboard/hooks";
 
 export default function Payment() {
   const { mutate } = useAddNewOrder();
@@ -12,6 +13,7 @@ export default function Payment() {
   const clearCart = useProductStore((state) => state.clearCart);
   const [user, setUser] = useState<any>(null);
   const [deliveryDate, setDeliveryDate] = useState<string | null>(null);
+  const { mutate: editQuantityAfterOrder } = useEditProductById();
 
   useEffect(() => {
     const userString = localStorage.getItem("user");
@@ -43,11 +45,25 @@ export default function Payment() {
 
     mutate(order, {
       onSuccess: () => {
-        clearCart();
-        localStorage.removeItem("deliveryDate");
+        const updatedProducts = cart.map((cartItem) => {
+          return {
+            _id: cartItem._id,
+            quantity: cartItem.quantity - cartItem.quantityInBasket,
+          };
+        });
+
+        editQuantityAfterOrder(updatedProducts, {
+          onSuccess: () => {
+            clearCart();
+            localStorage.removeItem("deliveryDate");
+          },
+          onError: (error) => {
+            console.error("Failed to update products", error);
+          },
+        });
       },
       onError: (error) => {
-        console.error("order failed", error);
+        console.error("Order failed", error);
       },
     });
   };

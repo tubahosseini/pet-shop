@@ -44,8 +44,10 @@ export const editProductById = async (editedProductData: IProduct) => {
   }
 };
 
-export const editProductsById = async (editedProductsData: IProduct[]) => {
-  const promiseAll = editedProductsData.map((item) => editProductById(item));
+export const editProductsById = async (editedProductsData: any) => {
+  const promiseAll = editedProductsData.map((item: any) =>
+    editProductById(item)
+  );
   const editedProducts = await Promise.all(promiseAll);
 };
 
