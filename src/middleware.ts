@@ -27,6 +27,19 @@ export async function middleware(req: NextRequest) {
     }
   }
 
+  // Check for the auth routes
+  else if (pathname.startsWith("/sign-in")) {
+    const accessCookie = req.cookies.get("accessToken")?.value;
+    if (accessCookie) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+  } else if (pathname.startsWith("/sign-up")) {
+    const accessCookie = req.cookies.get("accessToken")?.value;
+    if (accessCookie) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+  }
+
   return NextResponse.next();
 }
 
@@ -35,5 +48,7 @@ export const config = {
     `${routes.dashboard}/:path*`,
     `${routes.checkout}/:path*`,
     `${routes.userProfile}/:path*`,
+    `${routes.signIn}`,
+    `${routes.signUp}`,
   ],
 };

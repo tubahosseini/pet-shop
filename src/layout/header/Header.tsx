@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import { alpha, styled } from "@mui/material/styles";
-import { getCookie, setCookie } from "cookies-next";
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import CartDrawer from "./CartDrawer";
@@ -78,7 +78,10 @@ export default function Header() {
   }, []);
 
   function signOut() {
-    setCookie("role", "");
+    deleteCookie("role");
+    deleteCookie("accessToken");
+    deleteCookie("refreshToken");
+    localStorage.setItem("user", "");
     window.location.reload();
   }
 
