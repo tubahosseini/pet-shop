@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { useState } from "react";
-import { useGetAllOrders } from "../../hooks";
+import { useGetAllOrders, useUpdateDeliveryDate } from "../../hooks";
 import { formatDateTime } from "@/utils/formatDateTime";
 import Collapse from "@mui/material/Collapse";
 import { Box, Button, IconButton, Typography } from "@mui/material";
@@ -37,6 +37,16 @@ export default function OrdersTab() {
   const [orderBy, setOrderBy] = useState<keyof Order>("_id");
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [openRow, setOpenRow] = useState<string | null>(null);
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  const { updateOrderDeliveryDate } = useUpdateDeliveryDate();
+  const { data } = useGetAllOrders();
+
+  React.useEffect(() => {
+    if (data) {
+      setOrders(data.data.orders);
+    }
+  }, [data]);
 
   const handleRequestSort = (property: keyof Order) => {
     const isAsc = orderBy === property && order === "asc";
@@ -51,23 +61,33 @@ export default function OrdersTab() {
     setPage(newPage);
   };
 
-  const { data } = useGetAllOrders();
-  if (!data) {
-    return <div>Loading...</div>;
-  }
-  const allOrders: Order[] = data.data.orders;
+  const handleRowClick = (id: string) => {
+    setOpenRow(openRow === id ? null : id);
+  };
 
-  const sortedOrders = allOrders.slice().sort((a, b) => {
+  const handleDeliveredClick = async (id: string) => {
+    // update the UI
+    const updatedOrders = orders.map((order) =>
+      order._id === id
+        ? { ...order, deliveryDate: new Date().toISOString() }
+        : order
+    );
+    setOrders(updatedOrders);
+
+    try {
+      await updateOrderDeliveryDate(id);
+    } catch (error) {
+      console.error("fail", error);
+    }
+  };
+
+  const sortedOrders = orders.slice().sort((a, b) => {
     if (order === "asc") {
       return a[orderBy] > b[orderBy] ? 1 : -1;
     } else {
       return b[orderBy] > a[orderBy] ? 1 : -1;
     }
   });
-
-  const handleRowClick = (id: string) => {
-    setOpenRow(openRow === id ? null : id);
-  };
 
   return (
     <TableContainer
@@ -208,6 +228,8 @@ export default function OrdersTab() {
                             color: "primary.light",
                           },
                         }}
+                        onClick={() => handleDeliveredClick(item._id)}
+                        disabled={new Date(item.deliveryDate) < new Date()}
                       >
                         Delivered
                       </Button>
@@ -222,7 +244,7 @@ export default function OrdersTab() {
       <TablePagination
         rowsPerPageOptions={[]}
         component="div"
-        count={allOrders.length}
+        count={orders.length}
         rowsPerPage={5}
         page={page}
         onPageChange={handleChangePage}

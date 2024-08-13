@@ -9,4 +9,8 @@ export const routes = {
   aboutUs: "/about-us",
   shop: "/shop",
   userProfile: "/user-profile",
+  payment: "/payment",
+  result: "/result",
+  failedPayment: "/result?status=fail",
+  successfulPayment: "/result?status=success",
 };

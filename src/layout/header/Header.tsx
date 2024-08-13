@@ -1,38 +1,25 @@
-import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Link,
-  Typography,
-  SwipeableDrawer,
-  List,
-  ListItem,
-  ListItemText,
-  IconButton,
-  useMediaQuery,
-  useTheme,
-  Collapse,
-  Divider,
-} from "@mui/material";
+import { routes } from "@/constants/routes";
+import { Logout, Menu, ShoppingCart } from "@mui/icons-material";
 import PetsIcon from "@mui/icons-material/Pets";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import {
-  ShoppingCart,
-  Menu,
-  AutoStories,
-  Phone,
-  Store,
-  VpnKey,
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-  Dashboard,
-  Person,
-  Logout,
-} from "@mui/icons-material";
+  Badge,
+  Box,
+  IconButton,
+  Link,
+  SwipeableDrawer,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import InputBase from "@mui/material/InputBase";
+import { alpha, styled } from "@mui/material/styles";
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import { useRouter } from "next/router";
-import { routes } from "@/constants/routes";
-import { getCookie, setCookie } from "cookies-next";
+import React, { useEffect, useState } from "react";
+import CartDrawer from "./CartDrawer";
+import DrawerList from "./DrawerList";
+import { useProductStore } from "@/stores/BasketStore";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -76,22 +63,27 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
-  const [openCats, setOpenCats] = useState(false);
-  const [openDogs, setOpenDogs] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
 
-
   const theme = useTheme();
   const router = useRouter();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const cart = useProductStore((state) => state.cart);
 
   useEffect(() => {
     const role = getCookie("role") as string;
     setUserRole(role);
   }, []);
+
+  function signOut() {
+    deleteCookie("role");
+    deleteCookie("accessToken");
+    deleteCookie("refreshToken");
+    localStorage.setItem("user", "");
+    window.location.reload();
+  }
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -119,31 +111,6 @@ export default function Header() {
       setCartDrawerOpen(open);
     };
 
-  const renderUserRoleListItem = () => {
-    if (userRole === "ADMIN") {
-      return (
-        <ListItem component="a" href={routes.dashboard}>
-          <Dashboard sx={{ color: "primary.main", mr: 1 }} />
-          <ListItemText primary="Dashboard" />
-        </ListItem>
-      );
-    }
-    if (userRole === "USER") {
-      return (
-        <ListItem component="a" href={routes.userProfile}>
-          <Person sx={{ color: "primary.main", mr: 1 }} />
-          <ListItemText primary="Profile" />
-        </ListItem>
-      );
-    }
-    return (
-      <ListItem component="a" href={routes.signIn}>
-        <VpnKey sx={{ color: "primary.main", mr: 1 }} />
-        <ListItemText primary="Sign In" />
-      </ListItem>
-    );
-  };
-
   const renderUserRoleLink = () => {
     if (userRole === "ADMIN") {
       return (
@@ -165,106 +132,6 @@ export default function Header() {
       </Link>
     );
   };
-
-  const drawerList = (
-    <Box sx={{ width: 300 }} role="presentation">
-      <List>
-        <ListItem>
-          <Store sx={{ color: "primary.main", mr: 1 }} />
-          <ListItemText primary="Shop" />
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-          </IconButton>
-        </ListItem>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem sx={{ pl: 8, bgcolor: "#f7f7f7" }}>
-              <ListItemText primary="Cats" />
-              <IconButton
-                aria-label="expand row"
-                size="small"
-                onClick={() => setOpenCats(!openCats)}
-              >
-                {openCats ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-              </IconButton>
-            </ListItem>
-            <Collapse in={openCats} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ ml: 10 }}>
-                <ListItem>
-                  <ListItemText primary="Foods" />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="Toys" />
-                </ListItem>
-              </List>
-            </Collapse>
-            <Divider />
-            <ListItem sx={{ pl: 8, bgcolor: "#f7f7f7" }}>
-              <ListItemText primary="Dogs" />
-              <IconButton
-                aria-label="expand row"
-                size="small"
-                onClick={() => setOpenDogs(!openDogs)}
-              >
-                {openDogs ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-              </IconButton>
-            </ListItem>
-            <Collapse in={openDogs} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding sx={{ ml: 10 }}>
-                <ListItem>
-                  <ListItemText primary="Foods" />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="Clothes" />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="Beds" />
-                </ListItem>
-              </List>
-            </Collapse>
-          </List>
-        </Collapse>
-        <Divider />
-        <ListItem component="a" href={routes.aboutUs}>
-          <AutoStories sx={{ color: "primary.main", mr: 1 }} />
-          <ListItemText primary="Our Story" />
-        </ListItem>
-        <Divider />
-        <ListItem component="a" href={routes.contactUs}>
-          <Phone sx={{ color: "primary.main", mr: 1 }} />
-          <ListItemText primary="Contact Us" />
-        </ListItem>
-        <Divider />
-        {renderUserRoleListItem()}
-        <Divider />
-        {userRole && (
-          <ListItem>
-            <IconButton onClick={() => setCookie("role", "")}>
-              <Logout sx={{ color: "primary.main", mr: 1 }} />
-            </IconButton>
-            <ListItemText primary="Sign Out" />
-          </ListItem>
-        )}
-      </List>
-    </Box>
-  );
-
-  const cartDrawerList = (
-    <Box sx={{ width: 300 }} role="presentation">
-      <List>
-        <ListItem>
-          <ListItemText primary="Item 1" secondary="Description of item 1" />
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="Item 2" secondary="Description of item 2" />
-        </ListItem>
-      </List>
-    </Box>
-  );
 
   return (
     <Box
@@ -336,29 +203,35 @@ export default function Header() {
       <Box sx={{ display: "flex", gap: 1 }}>
         <Search>
           <SearchIconWrapper>
-            <SearchIcon sx={{ color: "primary.main", fontSize: 30 }} />
+            <SearchIcon sx={{ color: "primary.main", fontSize: 30, mt: 1 }} />
           </SearchIconWrapper>
           <StyledInputBase
             placeholder="Search…"
             inputProps={{ "aria-label": "search" }}
           />
         </Search>
-        <ShoppingCart
-          sx={{
-            color: "primary.main",
-            fontSize: 30,
-            display: { xs: "none", md: "block" },
-          }}
-          onClick={toggleCartDrawer(true)}
-        />
+        <IconButton onClick={toggleCartDrawer(true)}>
+          <Badge badgeContent={cart.length} color="error">
+            <ShoppingCart
+              sx={{
+                color: "primary.main",
+                fontSize: 30,
+                display: { xs: "none", md: "block" },
+                cursor: "pointer",
+              }}
+            />
+          </Badge>
+        </IconButton>
         {userRole && (
           <Logout
             sx={{
               color: "primary.main",
               fontSize: 30,
               display: { xs: "none", md: "block" },
+              cursor: "pointer",
+              mt: 1,
             }}
-            onClick={() => setCookie("role", "")}
+            onClick={signOut}
           />
         )}
         <Menu
@@ -376,7 +249,7 @@ export default function Header() {
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}
       >
-        {drawerList}
+        <DrawerList userRole={userRole} />
       </SwipeableDrawer>
       <SwipeableDrawer
         anchor={isMdUp ? "right" : "left"}
@@ -384,7 +257,7 @@ export default function Header() {
         onClose={toggleCartDrawer(false)}
         onOpen={toggleCartDrawer(true)}
       >
-        {cartDrawerList}
+        <CartDrawer />
       </SwipeableDrawer>
     </Box>
   );

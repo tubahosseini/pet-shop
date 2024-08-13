@@ -3,6 +3,7 @@ import {
   editProductsById,
   getAllOrders,
   removeProductById,
+  updateDeliveryDate,
 } from "@/components/dashboard/services";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -39,4 +40,17 @@ export const useEditProductById = () => {
       queryClient.invalidateQueries({ queryKey: ["allProducts"] });
     },
   });
+};
+
+export const useUpdateDeliveryDate = () => {
+  const updateOrderDeliveryDate = async (orderId: string) => {
+    try {
+      const currentDate = new Date().toISOString();
+      const data = await updateDeliveryDate(orderId, currentDate);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return { updateOrderDeliveryDate };
 };
