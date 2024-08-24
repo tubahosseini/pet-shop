@@ -11,6 +11,9 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import { Delete, Edit } from "@mui/icons-material";
 import { useState } from "react";
 import Image from "next/image";
+import { useRemoveProductById } from "../../hooks";
+import { IconButton } from "@mui/material";
+import Swal from "sweetalert2";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -47,7 +50,28 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
 }
 
 export default function ProductsTab(data: any) {
-  // console.log(data.data.data.products);
+  const { mutate: RemoveProductById } = useRemoveProductById();
+
+  function DeleteProduct(id: string) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        });
+        RemoveProductById(id);
+      }
+    });
+  }
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] =
     useState<keyof (typeof data.data.products)[0]>("name");
@@ -149,12 +173,14 @@ export default function ProductsTab(data: any) {
                     "&:hover": { color: "primary.dark" },
                   }}
                 />
-                <Delete
-                  sx={{
-                    color: "primary.main",
-                    "&:hover": { color: "primary.dark" },
-                  }}
-                />
+                <IconButton onClick={() => DeleteProduct(product._id)}>
+                  <Delete
+                    sx={{
+                      color: "primary.main",
+                      "&:hover": { color: "primary.dark" },
+                    }}
+                  />
+                </IconButton>
               </TableCell>
             </TableRow>
           ))}

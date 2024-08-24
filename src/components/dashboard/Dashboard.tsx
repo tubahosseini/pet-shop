@@ -27,10 +27,10 @@ import ProductsTab from "./tabs/products-tab/ProductsTab";
 import AddTab from "./tabs/add-tab/AddTab";
 import InventoryTab from "./tabs/inventory-tab/InventoryTab";
 import OrdersTab from "./tabs/orders-tab/OrdersTab";
-import { useGetAllProducts } from "./hooks";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { routes } from "@/constants/routes";
+import { useGetAllProducts } from "@/hooks";
 
 export default function Dashboard() {
   const { data } = useGetAllProducts();

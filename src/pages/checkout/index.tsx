@@ -1,9 +1,10 @@
 import React from "react";
 import PrimaryLayout from "@/layout/PrimaryLayout";
 import { ReactElement } from "react";
+import Checkout from "@/components/checkout/Checkout";
 
 export default function CheckoutPage() {
-  return <div>CheckoutPage</div>;
+  return <Checkout />;
 }
 
 CheckoutPage.getLayout = function getLayout(page: ReactElement) {
