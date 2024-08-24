@@ -72,7 +72,6 @@ export default function ProductsTab(data: any) {
       }
     });
   }
-  // console.log(data.data.data.products);
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] =
     useState<keyof (typeof data.data.products)[0]>("name");

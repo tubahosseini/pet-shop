@@ -54,7 +54,6 @@ export default function InventoryTab(data: any) {
   const { mutate: editInventory } = useEditProductById();
 
   function saveChanges() {
-    console.log(editedValues);
     editInventory(editedValues);
     setEditedValues([]);
   }

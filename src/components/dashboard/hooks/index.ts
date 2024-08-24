@@ -49,7 +49,7 @@ export const useUpdateDeliveryDate = () => {
       const data = await updateDeliveryDate(orderId, currentDate);
       return data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   return { updateOrderDeliveryDate };
